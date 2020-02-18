@@ -1,40 +1,42 @@
 <script>
-	import { Events } from 'Events.svelte'
+	import Events from './Events.svelte'
 	export let name;
+	
 	const state = {
-		sidebarIsOpen: false
+		sidebarIsOpen: true
 	}
 </script>
 
 <header>
 	<nav>
-		<h1>CampusNow</h1>
+		<h1><i>🎓</i> {name}</h1>
 		<button>Log In</button>
 	</nav>
 </header>
 <main>
-	{#if state.isOpen}
+    <div id="map"></div>
+	{#if state.sidebarIsOpen}
 		<aside>
-			<Events></Events>
+			<Events />
 		</aside>
 	{/if}
 </main>
 
 <style>
-	:root {
-		font-family: sans-serif;
+	nav {
+		background-color: palegoldenrod;
+		grid-auto-flow: column;
+		grid-template-columns: 1fr auto;
+		grid-gap: 1em;
+		padding: 1em;
 	}
 
-	* {
-		box-sizing: border-box;
-		border: none;
-		font-family: inherit;
-		margin: 0;
+	main {
+		grid-auto-flow: column;
+		grid-template-columns: 1fr 25rem;
 	}
 
-	div,
-	header, main, footer, section,
-	nav, aside {
-		display: grid;
+	#map {
+		background: rgba(0, 0, 0, 0.05);
 	}
 </style>
