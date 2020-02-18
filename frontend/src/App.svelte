@@ -1,5 +1,9 @@
 <script>
+	import { Events } from 'Events.svelte'
 	export let name;
+	const state = {
+		sidebarIsOpen: false
+	}
 </script>
 
 <header>
@@ -9,7 +13,11 @@
 	</nav>
 </header>
 <main>
-	
+	{#if state.isOpen}
+		<aside>
+			<Events></Events>
+		</aside>
+	{/if}
 </main>
 
 <style>
@@ -19,11 +27,14 @@
 
 	* {
 		box-sizing: border-box;
+		border: none;
+		font-family: inherit;
 		margin: 0;
 	}
 
 	div,
-	header, main, footer, nav {
+	header, main, footer, section,
+	nav, aside {
 		display: grid;
 	}
 </style>
