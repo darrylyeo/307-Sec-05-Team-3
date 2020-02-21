@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: Azure/webapps-deploy@v1
       with:
-        publish-profile: *.publishsettings 
+        publish-profile: campusnowbackend.publishsettings 
         app-name:campusnowbackend
         package:backend/
         slot-name:production
