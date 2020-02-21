@@ -1,0 +1,17 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows
+
+    steps:
+    - uses: Azure/webapps-deploy@v1
+      with:
+        publish-profile: *.publishsettings 
+        app-name:campusnowbackend
+        package:backend/
+        slot-name:production
+        
