@@ -31,7 +31,7 @@ POST user/register/newUser
 Register a new user.
 */
 
-const get = url => fetch(`http://campusnow.tech/` + url).then(result => result.json())
+const get = path => fetch(`https://campusnowbackend.azurewebsites.net/` + path).then(result => result.json())
 const lowercaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
 	([k, v]) => [k[0].toLowerCase() + k.slice(1), v]
 ))
