@@ -33,6 +33,8 @@
 
 	#events {
 		display: grid;
+        /* grid-template-rows: auto 1fr; */
+        grid-auto-rows: max-content;
 		overflow-y: auto;
 	}
 	#events > * {
