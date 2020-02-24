@@ -1,4 +1,5 @@
 <script>
+	import { API } from './api.js'
 	import Map from './Map.svelte'
 	import Events from './Events.svelte'
 	
@@ -7,6 +8,8 @@
 	const state = {
 		sidebarIsOpen: true
 	}
+
+	const getEvents = API.event.getAllEvents()
 </script>
 
 <header>
@@ -16,10 +19,10 @@
 	</nav>
 </header>
 <main>
-	<Map />
+	<Map {getEvents} />
 	{#if state.sidebarIsOpen}
 		<aside>
-			<Events />
+			<Events {getEvents}/>
 		</aside>
 	{/if}
 </main>

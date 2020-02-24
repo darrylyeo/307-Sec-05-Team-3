@@ -1,17 +1,16 @@
 <script>
-    import { API } from './api.js'
 	import { formatDate } from './date.js'
 
-	const events = API.event.getAllEvents()
+	export let getEvents
 </script>
 
 <div id="events">
 	<h2>Upcoming Events</h2>
-	{#await events}
+	{#await getEvents}
 		<p>Looking for events...</p>
 	{:then events}
 		{#if events.length}
-			{#each events as event}
+			{#each events as event (event.listingId)}
 				<div class="event">
 					<h3>{event.title}</h3>
 					<p>{event.description}</p>
@@ -27,14 +26,14 @@
 </div>
 
 <style>
-    div {
-        display: flex;
-    }
+	div {
+		display: flex;
+	}
 
 	#events {
 		display: grid;
-        /* grid-template-rows: auto 1fr; */
-        grid-auto-rows: max-content;
+		/* grid-template-rows: auto 1fr; */
+		grid-auto-rows: max-content;
 		overflow-y: auto;
 	}
 	#events > * {
