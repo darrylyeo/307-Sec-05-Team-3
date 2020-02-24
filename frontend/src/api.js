@@ -37,22 +37,22 @@ const lowercaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
 ))
 
 export const API = {
-    user: {
-        login: {
-            authenticate(){
+	user: {
+		login: {
+			authenticate(){
 
-            }
-        },
-        register: {
-            newUser(){
+			}
+		},
+		register: {
+			newUser(){
 
-            }
-        }	
-    },
+			}
+		}	
+	},
 
-    event: {
-        getAllEvents(){
-            return get(`api/event/getAllEvents`)
+	event: {
+		getAllEvents(){
+			return get(`api/event/getAllEvents`)
 				.catch(e => ({
 					"EventRecords": [
 						{
@@ -66,7 +66,7 @@ export const API = {
 							"LocY": 8.1
 						},
 						{
-							"ListingId": 1,
+							"ListingId": 2,
 							"UserId": 2,
 							"Title": "sample string 3",
 							"Description": "sample string 4",
@@ -78,28 +78,28 @@ export const API = {
 					]
 				}))
 				.then(_ => _.EventRecords).then(_ => _.map(lowercaseKeys))
-        },
-        getEventById(EventId){
-            return get(`api/event/getEventById?EventId={EventId}`)
-        },
-        postNewEvent(){
-        },
-        updateEvent(){
-        },
-        deleteEvent(){
+		},
+		getEventById(EventId){
+			return get(`api/event/getEventById?EventId={EventId}`)
+		},
+		postNewEvent(){
+		},
+		updateEvent(){
+		},
+		deleteEvent(){
 
-        },
+		},
 
-        getEventsByUserId(userID){
-            `api/event/getEventsByUserId?UserId=${UserId}`
-        },
+		getEventsByUserId(userID){
+			`api/event/getEventsByUserId?UserId=${UserId}`
+		},
 
-        getEventsByTimeRange(){
-            post()
-        },
+		getEventsByTimeRange(){
+			post()
+		},
 
-        newUser(){
-            post()
-        }
-    }
+		newUser(){
+			post()
+		}
+	}
 }
