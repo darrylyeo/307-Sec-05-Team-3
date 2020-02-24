@@ -1,6 +1,8 @@
 <script>
+	import Map from './Map.svelte'
 	import Events from './Events.svelte'
-	export let name;
+	
+	export let name
 	
 	const state = {
 		sidebarIsOpen: true
@@ -14,7 +16,7 @@
 	</nav>
 </header>
 <main>
-    <div id="map"></div>
+	<Map />
 	{#if state.sidebarIsOpen}
 		<aside>
 			<Events />
