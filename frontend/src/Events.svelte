@@ -1,6 +1,6 @@
 <script>
-	import { formatDate } from './date.js'
-
+	import { Event } from './Event.svelte'
+	
 	export let getEvents
 </script>
 
@@ -11,11 +11,7 @@
 	{:then events}
 		{#if events.length}
 			{#each events as event (event.listingId)}
-				<div class="event">
-					<h3>{event.title}</h3>
-					<p>{event.description}</p>
-					<date>{formatDate(event.startTime)} – {formatDate(event.endTime)}</date>
-				</div>
+				<Event {event} />
 			{/each}
 		{:else}
 			<p>No events found.</p>
