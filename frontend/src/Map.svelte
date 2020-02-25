@@ -20,10 +20,28 @@
 
 		const events = await getEvents
 		
-		markers = events.map(event =>
-			leaflet.marker([event.locX, event.locY]).addTo(map)
+		$: markers = events.map(event =>
+			leaflet.marker([event.locX, event.locY])
+				.addTo(map)
+				.on('click', e => {
+					console.log(events)
+				})
+				.bindPopup(`
+					<h3>event.title</h3>
+					<p>event.description</p>
+				`)
 		)
 	})
 </script>
 
 <div id="map" bind:this={mapElement}></div>
+
+<style>
+	#map {
+		font: inherit;
+	}
+
+	:global(.leaflet-popup-content, .leaflet-popup-content p) {
+		margin: 0;
+	}
+</style>
