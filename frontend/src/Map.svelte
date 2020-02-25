@@ -9,15 +9,19 @@
 
 	onMount(async () => {
 		const map = leaflet.map(mapElement, {
-			center: [51.505, -0.09],
-			zoom: 13
+			center: [35.3013, -120.6620],
+			zoom: 17
 		})
 		console.log(map)
+		
+		leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '' // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map)
 
 		const events = await getEvents
 		
 		markers = events.map(event =>
-			leaflet.marker([50.5, 30.5]).addTo(map)
+			leaflet.marker([event.locX, event.locY]).addTo(map)
 		)
 	})
 </script>

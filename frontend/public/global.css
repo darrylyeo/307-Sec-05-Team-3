@@ -10,7 +10,7 @@
     margin: 0;
 }
 
-body, div,
+body,
 header, main, footer, section,
 nav, aside {
     display: grid;
