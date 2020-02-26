@@ -27,4 +27,12 @@
 
 		background-color: rgba(255, 255, 255, 0.5);
 	}
+
+	date {
+		font-size: 0.9em;
+	}
+
+	p {
+		font-size: 0.8em;
+	}
 </style>
