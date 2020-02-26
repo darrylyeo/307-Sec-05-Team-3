@@ -3,8 +3,6 @@
 	import Map from './Map.svelte'
 	import Events from './Events.svelte'
 	
-	export let name
-	
 	const state = {
 		sidebarIsOpen: true
 	}
@@ -14,7 +12,7 @@
 
 <header>
 	<nav>
-		<h1><i>🎓</i> {name}</h1>
+		<h1 id="logo"><i>🏫</i> Campus<b>Now</b></h1>
 		<button>Log In</button>
 	</nav>
 </header>
@@ -34,6 +32,11 @@
 		grid-template-columns: 1fr auto;
 		grid-gap: 1em;
 		padding: 1em;
+	}
+
+	#logo {
+		font-weight: normal;
+		text-transform: uppercase;
 	}
 
 	main {
