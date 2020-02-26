@@ -14,3 +14,15 @@
 	<p>{event.description}</p>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime)}</date>
 </div>
+
+<style>
+	div {
+		padding: 1rem;
+
+		display: grid;
+		grid-auto-flow: row;
+		gap: 0.25em;
+
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+</style>

@@ -38,7 +38,10 @@
 
 <style>
 	#map {
+		background: rgba(0, 0, 0, 0.05);
 		font: inherit;
+		overflow: visible;
+		z-index: 0;
 	}
 
 	:global(.leaflet-popup-content, .leaflet-popup-content p) {

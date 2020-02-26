@@ -31,12 +31,13 @@
 		/* grid-template-rows: auto 1fr; */
 		grid-auto-rows: max-content;
 		overflow-y: auto;
+		grid-gap: 1px;
 	}
 	#events > * {
 		padding: 1rem;
 
 		display: grid;
 		grid-auto-flow: row;
-		gap: 0.5em;
+		grid-gap: 0.65em;
 	}
 </style>

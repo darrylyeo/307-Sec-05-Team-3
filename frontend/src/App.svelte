@@ -26,25 +26,32 @@
 </main>
 
 <style>
+	nav, aside {
+		position: relative;
+		z-index: 1;
+
+		backdrop-filter: blur(3px) hue-rotate(80deg);
+	}
 	nav {
-		background-color: palegoldenrod;
+		background-color: rgba(155, 224, 142, 0.8);
+
 		grid-auto-flow: column;
 		grid-template-columns: 1fr auto;
 		grid-gap: 1em;
 		padding: 1em;
 	}
+	aside {
+		background-color: rgba(220, 235, 174, 0.8);
+	}
 
 	#logo {
 		font-weight: normal;
 		text-transform: uppercase;
+		color: #254100;
 	}
 
 	main {
 		grid-auto-flow: column;
 		grid-template-columns: 1fr 25rem;
-	}
-
-	#map {
-		background: rgba(0, 0, 0, 0.05);
 	}
 </style>
