@@ -7,12 +7,14 @@
 		startTime: new Date(),
 		endTime: new Date()
 	}
+
+	import { fly } from 'svelte/transition'
 </script>
 
-<div class="event">
+<div class="event" transition:fly={{y: 300}}>
 	<h3>{event.title}</h3>
-	<p>{event.description}</p>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime)}</date>
+	<p>{event.description}</p>
 </div>
 
 <style>

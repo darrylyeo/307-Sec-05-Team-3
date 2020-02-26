@@ -1,21 +1,31 @@
 <script>
 	import Event from './Event.svelte'
-	
+		
 	export let getEvents
+
+	let searchFilter = ''
+	
+	const filterEvents = events =>
+		searchFilter
+			? events.filter(event => event.title.includes(searchFilter) || event.description.includes(searchFilter))
+			: events
+
+	import { fly } from 'svelte/transition'
 </script>
 
 <div id="events">
-	<h2>Upcoming Events</h2>
+	<div>
+		<h2>Upcoming Events</h2>
+		<input type="search" placeholder="Search events..." bind:value={searchFilter} />
+	</div>
 	{#await getEvents}
-		<p>Looking for events...</p>
+		<p transition:fly={{y: -30}}>Looking for events...</p>
 	{:then events}
-		{#if events.length}
-			{#each events as event (event.listingId)}
-				<Event {event} />
-			{/each}
+		{#each filterEvents(events) as event (event.listingId)}
+			<Event {event} />
 		{:else}
 			<p>No events found.</p>
-		{/if}
+		{/each}
 	{:catch error}
 		<p>We couldn't find any events: {error.message}</p>
 	{/await}
