@@ -64,7 +64,7 @@ form {
 	grid-template-columns: repeat(auto-fit, minmax(2.7rem, 1fr));
 	gap: 0.5em;
 }
-input {
+input, button {
 	font-size: inherit;
 }
 input[type=radio] {
