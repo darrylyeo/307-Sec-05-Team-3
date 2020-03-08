@@ -4,16 +4,16 @@
 }
 
 * {
-    box-sizing: border-box;
-    border: none;
-    font-family: inherit;
-    margin: 0;
+	box-sizing: border-box;
+	border: none;
+	font-family: inherit;
+	margin: 0;
 }
 
 body,
 header, main, footer, section,
 nav, aside {
-    display: grid;
+	display: grid;
 	place-self: stretch;
 }
 
@@ -28,8 +28,8 @@ body {
 }
 
 i {
-    font-style: normal;
-    display: inline-flex;
+	font-style: normal;
+	display: inline-flex;
 	place-content: center;
 }
 
