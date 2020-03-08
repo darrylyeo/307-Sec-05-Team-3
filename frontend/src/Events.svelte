@@ -7,7 +7,10 @@
 
 	const filterEvents = events =>
 		searchFilter
-			? events.filter(event => event.title.includes(searchFilter) || event.description.includes(searchFilter))
+			? events.filter(event =>
+				event.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
+				event.description.toLowerCase().includes(searchFilter.toLowerCase())
+			)
 			: events
 
 	import { fly } from 'svelte/transition'

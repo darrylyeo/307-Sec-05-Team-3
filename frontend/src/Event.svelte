@@ -11,11 +11,11 @@
 	export let isFocused = false
 
 	export let highlightString
-	$: highlightRegex = new RegExp(highlightString, 'g')
+	$: highlightRegex = new RegExp(highlightString, 'gi')
 
 	const highlight = str =>
 		highlightString
-			? str.replace(new RegExp(highlightString, 'g'), m => `<mark>${m}</mark>`)
+			? str.replace(new RegExp(highlightString, 'gi'), m => `<mark>${m}</mark>`)
 			: str
 		
 	
