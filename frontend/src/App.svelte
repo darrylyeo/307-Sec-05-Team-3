@@ -1,13 +1,19 @@
 <script>
-	import { API } from './api.js'
 	import Map from './Map.svelte'
 	import Events from './Events.svelte'
 	
+	import { API } from './api.js'
+	
+	import { writable } from 'svelte/store'
+
+	const getEvents = API.event.getAllEvents()
+
 	const state = {
 		sidebarIsOpen: true
 	}
 
-	const getEvents = API.event.getAllEvents()
+	let currentEvent = writable()
+	$: console.log('currentEvent:', $currentEvent)
 </script>
 
 <header>
@@ -17,10 +23,10 @@
 	</nav>
 </header>
 <main>
-	<Map {getEvents} />
+	<Map {getEvents} {currentEvent} />
 	{#if state.sidebarIsOpen}
 		<aside>
-			<Events {getEvents}/>
+			<Events {getEvents} {currentEvent} />
 		</aside>
 	{/if}
 </main>

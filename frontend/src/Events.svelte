@@ -1,10 +1,10 @@
 <script>
 	import Event from './Event.svelte'
 		
-	export let getEvents
+	export let getEvents, currentEvent
 
 	let searchFilter = ''
-	
+
 	const filterEvents = events =>
 		searchFilter
 			? events.filter(event => event.title.includes(searchFilter) || event.description.includes(searchFilter))
@@ -22,7 +22,7 @@
 		<p transition:fly={{y: -30}}>Looking for events...</p>
 	{:then events}
 		{#each filterEvents(events) as event (event.listingId)}
-			<Event {event} />
+			<Event {event} isFocused={$currentEvent === event} highlightString={searchFilter} on:click={e => $currentEvent = event}/>
 		{:else}
 			<p>No events found.</p>
 		{/each}
