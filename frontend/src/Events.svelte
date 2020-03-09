@@ -1,9 +1,17 @@
 <script>
+	import { API } from './api.js'
 	import Event from './Event.svelte'
-		
-	export let getEvents, currentEvent
 
+	export let events, currentEvent, currentUser
+	
+	let isCreatingNewEvent = false
+	let isOnlyShowingUserEvents = false
 	let searchFilter = ''
+
+	$: getEvents = $currentUser && isOnlyShowingUserEvents
+		? API.event.getEventsByUser($currentUser)
+		: API.event.getAllEvents()
+	$: getEvents.then(_ => $events = _)
 
 	const filterEvents = events =>
 		searchFilter
@@ -18,8 +26,18 @@
 
 <div id="events">
 	<div>
-		<h2>Upcoming Events</h2>
-		<input type="search" placeholder="Search events..." bind:value={searchFilter} />
+		<div>
+			<h2>Upcoming Events</h2>
+			{#if currentUser}
+				<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
+			{/if}
+		</div>
+		<div>
+			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
+			{#if currentUser}
+				<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
+			{/if}
+		</div>
 	</div>
 	{#await getEvents}
 		<p transition:fly={{y: -30}}>Looking for events...</p>
@@ -28,17 +46,15 @@
 			<Event {event} isFocused={$currentEvent === event} highlightString={searchFilter} on:click={e => $currentEvent = event}/>
 		{:else}
 			<p>No events found.</p>
+			<p class="placeholder-icon">🏫</p>
 		{/each}
 	{:catch error}
-		<p>We couldn't find any events: {error.message}</p>
+		<p>We had some trouble loading the events.</p>
+		<p class="error">{error.message}</p>
 	{/await}
 </div>
 
 <style>
-	div {
-		display: flex;
-	}
-
 	#events {
 		display: grid;
 		/* grid-template-rows: auto 1fr; */
@@ -52,5 +68,11 @@
 		display: grid;
 		grid-auto-flow: row;
 		grid-gap: 0.65em;
+	}
+	#events > * > * {
+		display: grid;
+		grid-auto-flow: column;
+		grid-gap: 0.5em;
+		align-items: center;
 	}
 </style>

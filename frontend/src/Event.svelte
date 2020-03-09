@@ -1,6 +1,8 @@
 <script>
 	import { formatDate } from './date.js'
 
+	import EventForm from './EventForm.svelte'
+
 	export let event = {
 		title: '[Event Title]',
 		description: '[Event description]',
@@ -19,7 +21,7 @@
 			: str
 		
 	
-	let isEditing
+	let isEditing = false
 
 	import { fly } from 'svelte/transition'
 </script>
@@ -29,9 +31,13 @@
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime)}</date>
 	<p>{@html highlight(event.description)}</p>
 	<div class="actions">
-		<button>Edit</button>
+		<button on:click={() => isEditing = true}>Edit</button>
 	</div>
 </div>
+
+{#if isEditing}
+	<EventForm />
+{/if}
 
 <style>
 	.event {

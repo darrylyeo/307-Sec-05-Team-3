@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte'
 	import leaflet from 'leaflet'
  
-	export let getEvents, currentEvent
+	export let events = [], currentEvent
 	
 	let mapElement
 	let markerForEvent = new Map()
@@ -35,21 +35,19 @@
 	})
 
 	$: if(map){
-		getEvents.then(events => {
-			markerForEvent = events.mapToMap(event =>
-				leaflet.marker([event.locX, event.locY])
-					.addTo(map)
-					.on('click', function(e){
-						console.log(e)
-					
-						$currentEvent = event
-					})
-					.bindPopup(`
-						<h3>${event.title}</h3>
-						<p>${event.description}</p>
-					`)
-			)
-		})
+		markerForEvent = $events.mapToMap(event =>
+			leaflet.marker([event.locX, event.locY])
+				.addTo(map)
+				.on('click', function(e){
+					console.log(e)
+				
+					$currentEvent = event
+				})
+				.bindPopup(`
+					<h3>${event.title}</h3>
+					<p>${event.description}</p>
+				`)
+		)
 	}
 
 	$: if(map && $currentEvent){

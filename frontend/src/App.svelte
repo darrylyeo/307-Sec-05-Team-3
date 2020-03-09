@@ -1,13 +1,10 @@
 <script>
+	import { API } from './api.js'
+	import { writable } from 'svelte/store'
+
 	import Map from './Map.svelte'
 	import Events from './Events.svelte'
 	import Login from './Login.svelte'
-	
-	import { API } from './api.js'
-	
-	import { writable } from 'svelte/store'
-
-	const getEvents = API.event.getAllEvents()
 
 	let sidebarIsOpen = true
 
@@ -15,10 +12,12 @@
 
 	let currentUser = writable()
 	$: console.log('currentUser:', $currentUser)
-	$currentUser = {
-		firstName: 'Musty',
-		lastName: 'Mustang'
-	}
+	// $currentUser = {
+	// 	firstName: 'Musty',
+	// 	lastName: 'Mustang'
+	// }
+
+	let events = writable([])
 
 	let currentEvent = writable()
 	$: console.log('currentEvent:', $currentEvent)
@@ -36,7 +35,7 @@
 
 		{#if $currentUser}
 			<p>
-				<span>Hello, <b>{$currentUser.firstName}</b></span>
+				<span>Hello, <b>{$currentUser.firstName} {$currentUser.lastName}</b></span>
 				{#if $currentUser.isAdmin}<i title="You're an admin">⭐</i>{/if}
 			</p>
 			<button on:click={logOut}>Log Out</button>
@@ -50,13 +49,13 @@
 	</nav>
 </header>
 <main>
-	<Map {getEvents} {currentEvent} />
+	<Map {events} {currentEvent} />
 	{#if sidebarIsOpen}
 		<aside>
 			{#if isShowingLoginRegister}
 				<Login {currentUser} />
 			{/if}
-			<Events {getEvents} {currentEvent} />
+			<Events {currentUser} {events} {currentEvent} />
 		</aside>
 	{/if}
 </main>
@@ -76,9 +75,6 @@
 		grid-gap: 1em;
 		padding: 1em;
 	}
-	aside {
-		background-color: rgba(220, 235, 174, 0.8);
-	}
 
 	#logo {
 		font-weight: normal;
@@ -89,5 +85,12 @@
 	main {
 		grid-auto-flow: column;
 		grid-template-columns: 1fr 25rem;
+	}
+	
+	aside {
+		background-color: rgba(220, 235, 174, 0.8);
+	}
+	aside > * {
+		background: linear-gradient(rgba(255, 255, 255, 0.25), transparent);
 	}
 </style>

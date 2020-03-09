@@ -31,16 +31,16 @@ POST user/register/newUser
 Register a new user.
 */
 
-const API_URL = `http://campusnow.tech`
+const API_URL = `https://campusnowbackend.azurewebsites.net` // `http://campusnow.tech`
 
 const GET = (path, body, options) =>
 	fetch(API_URL + '/' + path, {
-		...body ? {
+		...body ? console.log(upperCaseKeys(body))||{
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: upperCaseKeys(JSON.stringify(body))
+			body: JSON.stringify(upperCaseKeys(body))
 		} : {},
 		...options
 	})
@@ -87,6 +87,7 @@ export const API = {
 
 		register: {
 			newUser(user){
+				// return POST(`user/register/newUser`, user)
 				return POST(`user/register/newUser`, {
 					newUserRecord: {
 						// "UserId": 1,

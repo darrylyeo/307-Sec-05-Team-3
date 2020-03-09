@@ -8,6 +8,7 @@
 	border: none;
 	font-family: inherit;
 	margin: 0;
+	flex: 1;
 }
 
 body,
@@ -56,8 +57,8 @@ label {
 
 
 form {
-	padding: 1.5em;
-	gap: 1em;
+	padding: 1rem;
+	gap: 1rem;
 	
 	display: grid;
 	/* grid-template-rows: auto 1fr; */
@@ -78,7 +79,7 @@ form > * {
 	grid-template-columns: repeat(auto-fit, minmax(2.7rem, 1fr));
 	gap: 0.5em;
 }
-input, button {
+input {
 	font-size: inherit;
 }
 input[type=radio] {
@@ -100,18 +101,18 @@ input[type=radio] + span, button, textarea {
 input:hover, button:hover, textarea:hover {
 	background-color: rgba(255, 255, 255, 1);
 }
-@supports (backdrop-filter: brightness(250%)) {
+@supports (backdrop-filter: brightness(150%)) {
 	input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search],
 	input[type=radio] + span, button, textarea {
 		background-color: transparent;
 		/* backdrop-filter: brightness(200%); */
-		backdrop-filter: brightness(250%);
+		backdrop-filter: brightness(150%);
 		transition: 0.2s;
 		transition-property: background-color, backdrop-filter, color;
 	}
 
 	input:hover, button:hover, textarea:hover {
-		backdrop-filter: brightness(210%);
+		backdrop-filter: brightness(180%);
 	}
 }
 
@@ -128,8 +129,10 @@ input.inline {
 }
 
 button {
+	font-size: 0.85em;
 	line-height: 1;
 	padding: 0.5em 0.75em;
+	flex: 0 auto;
 
 	cursor: pointer;
 }
@@ -143,6 +146,17 @@ label span:first-child {
 	font-size: 0.7em;
 	text-transform: uppercase;
 	letter-spacing: 0.2ch;
+}
+
+
+.error {
+	color: #ff2211;
+}
+
+.placeholder-icon {
+	font-size: 16em;
+    opacity: 0.2;
+    filter: grayscale(1);
 }
 
 
