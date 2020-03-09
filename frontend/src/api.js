@@ -35,7 +35,14 @@ const API_URL = `http://campusnow.tech`
 
 const GET = (path, body, options) =>
 	fetch(API_URL + '/' + path, {
-		...body ? {body: upperCaseKeys(JSON.stringify(body))} : {}
+		...body ? {
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: upperCaseKeys(JSON.stringify(body))
+		} : {},
+		...options
 	})
 	.then(result => result.json())
 	// .then(lowerCaseKeys)
@@ -57,10 +64,10 @@ if(!Object.fromEntries) Object.fromEntries = iterable => {
 }
 
 const lowerCaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
-	([k, v]) => [k[0].toLowerCase() + k.slice(1), v]
+	([k, v]) => [k[0].toLowerCase() + k.slice(1), typeof v === 'object' ? lowerCaseKeys(v) : v]
 ))
 const upperCaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
-	([k, v]) => [k[0].toUpperCase() + k.slice(1), v]
+	([k, v]) => [k[0].toUpperCase() + k.slice(1), typeof v === 'object' ? upperCaseKeys(v) : v]
 ))
 
 export const API = {
@@ -72,7 +79,8 @@ export const API = {
 					password
 				}))
 			},
-			logout({username, password}){
+
+			logout(){
 				return GET(`user/login/logout`)
 			}
 		},
@@ -80,7 +88,7 @@ export const API = {
 		register: {
 			newUser(user){
 				return POST(`user/register/newUser`, {
-					NewUserRecord: upperCaseKeys({
+					newUserRecord: {
 						// "UserId": 1,
 						// "UserName": "sample string 2",
 						// "Password": "sample string 3",
@@ -89,7 +97,7 @@ export const API = {
 						// "JoinDate": "2020-03-09T03:46:07.0745748+00:00",
 						// "IsAdmin": 7,
 						...user
-					})
+					}
 				})
 			}
 		}	
@@ -158,15 +166,15 @@ export const API = {
 
 		updateEvent(event){
 			return PUT(`api/event/updateEvent`, {
-				"UpdatedEvent": upperCaseKeys({
+				"updatedEvent": {
 					...event
-				})
+				}
 			})
 		},
 
 		deleteEvent(event){
 			return DELETE(`api/event/deleteEvent`, {
-				"EventIdToDelete": event.id
+				"eventIdToDelete": event.id
 			})
 		},
 
@@ -179,9 +187,10 @@ export const API = {
 		},
 
 		getEventsByTimeRange(startTime, endTime){
-			return POST(`api/event/getEventsByTimeRange`, upperCaseKeys({
-				startTime, endTime
-			}))
+			return POST(`api/event/getEventsByTimeRange`, {
+				startTime,
+				endTime
+			})
 		}
 	}
 }

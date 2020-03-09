@@ -1,6 +1,7 @@
 <script>
 	import Map from './Map.svelte'
 	import Events from './Events.svelte'
+	import Login from './Login.svelte'
 	
 	import { API } from './api.js'
 	
@@ -8,24 +9,53 @@
 
 	const getEvents = API.event.getAllEvents()
 
-	const state = {
-		sidebarIsOpen: true
+	let sidebarIsOpen = true
+
+	let isShowingLoginRegister = false
+
+	let currentUser = writable()
+	$: console.log('currentUser:', $currentUser)
+	$currentUser = {
+		firstName: 'Musty',
+		lastName: 'Mustang'
 	}
 
 	let currentEvent = writable()
 	$: console.log('currentEvent:', $currentEvent)
+
+	const logOut = async function(){
+		const result = await API.user.login.logout()
+		console.log(result)
+		$currentUser = undefined
+	}
 </script>
 
 <header>
 	<nav>
 		<h1 id="logo"><i>🏫</i> Campus<b>Now</b></h1>
-		<button>Log In</button>
+
+		{#if $currentUser}
+			<p>
+				<span>Hello, <b>{$currentUser.firstName}</b></span>
+				{#if $currentUser.isAdmin}<i title="You're an admin">⭐</i>{/if}
+			</p>
+			<button on:click={logOut}>Log Out</button>
+		{:else}
+			{#if isShowingLoginRegister}
+				<button on:click={() => isShowingLoginRegister = false}>Cancel</button>
+			{:else}
+				<button on:click={() => isShowingLoginRegister = true}>Log In/Sign Up</button>
+			{/if}
+		{/if}
 	</nav>
 </header>
 <main>
 	<Map {getEvents} {currentEvent} />
-	{#if state.sidebarIsOpen}
+	{#if sidebarIsOpen}
 		<aside>
+			{#if isShowingLoginRegister}
+				<Login {currentUser} />
+			{/if}
 			<Events {getEvents} {currentEvent} />
 		</aside>
 	{/if}
