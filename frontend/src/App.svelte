@@ -10,13 +10,14 @@
 
 	let currentUserToken = writable(localStorage.currentUserToken)
 	$: localStorage.currentUserToken = $currentUserToken
+	$: if($currentUserToken)
+		API.user.getCurrentUser($currentUserToken)
+			.then(_ => $currentUser = _)
+	else $currentUser = undefined
 
 	let currentUser = writable()
 	$: console.log('currentUser:', $currentUser)
 	// $currentUser = { firstName: 'Musty', lastName: 'Mustang' }
-	$: if($currentUserToken)
-		API.user.getCurrentUser($currentUserToken)
-			.then(_ => $currentUser = _)
 
 	let isShowingLoginRegister = false
 	$: if($currentUser)
@@ -32,7 +33,7 @@
 		const result = await API.login.logout()
 		console.log(result)
 		if(result)
-			$currentUser = undefined
+			$currentUserToken = undefined
 	}
 </script>
 
