@@ -80,9 +80,7 @@ export const API = {
 		},
 		
 		getCurrentUser(token){
-			return POST(`api/login/getCurrentUser`, {
-
-			}, {
+			return GET(`api/login/getCurrentUser`, {
 				credentials: 'include',
 				headers: {
 					'Authorization': `Bearer ${token}`
