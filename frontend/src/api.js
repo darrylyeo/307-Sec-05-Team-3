@@ -33,28 +33,28 @@ Register a new user.
 
 const API_URL = `https://campusnowbackend.azurewebsites.net` // `http://campusnow.tech`
 
-const GET = (path, body, options) =>
+const GET = (path, options = {}) =>
 	fetch(API_URL + '/' + path, {
-		...body ? console.log(upperCaseKeys(body))||{
+		...options,
+		...options.body ? console.log(upperCaseKeys(options.body))||{
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify(upperCaseKeys(body))
-		} : {},
-		...options
+			body: JSON.stringify(upperCaseKeys(options.body))
+		} : {}
 	})
 	.then(result => result.json())
 	// .then(lowerCaseKeys)
 
 const POST = (path, body, options) =>
-	GET(path, body, {...options, method: 'POST'})
+	GET(path, {...options, body, method: 'POST'})
 
 const PUT = (path, body, options) =>
-	GET(path, body, {...options, method: 'PUT'})
+	GET(path, {...options, body, method: 'PUT'})
 
 const DELETE = (path, body, options) =>
-	GET(path, body, {...options, method: 'DELETE'})
+	GET(path, {...options, body, method: 'DELETE'})
 
 if(!Object.fromEntries) Object.fromEntries = iterable => {
 	const obj = {}
@@ -71,37 +71,47 @@ const upperCaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
 ))
 
 export const API = {
-	user: {
-		login: {
-			authenticate({username, password}){
-				return POST(`user/login/authenticate`, upperCaseKeys({
-					username,
-					password
-				}))
-			},
-
-			logout(){
-				return GET(`user/login/logout`)
-			}
+	login: {
+		authenticate({username, password}){
+			return POST(`api/login/authenticate`, upperCaseKeys({
+				username,
+				password
+			}))
+			.then(_ => _.Status)
 		},
 
-		register: {
-			newUser(user){
-				// return POST(`user/register/newUser`, user)
-				return POST(`user/register/newUser`, {
-					newUserRecord: {
-						// "UserId": 1,
-						// "UserName": "sample string 2",
-						// "Password": "sample string 3",
-						// "FirstName": "sample string 4",
-						// "LastName": "sample string 5",
-						// "JoinDate": "2020-03-09T03:46:07.0745748+00:00",
-						// "IsAdmin": 7,
-						...user
-					}
-				})
-			}
-		}	
+		logout(){
+			return GET(`api/login/logout`).then(_ => _.Status)
+		}
+	},
+	
+	user: {
+		getCurrentUser(token){
+			return POST(`api/user/getCurrentUser`, {
+
+			}, {
+				credentials: 'include',
+				headers: {
+					'Authorization': `Bearer ${token}`
+				}
+			})
+		},
+
+		newUser(user){
+			// return POST(`user/newUser`, user)
+			return POST(`api/user/newUser`, {
+				newUserRecord: {
+					// "UserId": 1,
+					// "UserName": "sample string 2",
+					// "Password": "sample string 3",
+					// "FirstName": "sample string 4",
+					// "LastName": "sample string 5",
+					// "JoinDate": "2020-03-09T03:46:07.0745748+00:00",
+					// "IsAdmin": 7,
+					...user
+				}
+			})
+		}
 	},
 
 	event: {

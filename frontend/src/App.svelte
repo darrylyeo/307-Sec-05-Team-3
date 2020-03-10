@@ -8,14 +8,20 @@
 
 	let sidebarIsOpen = true
 
-	let isShowingLoginRegister = false
+	let currentUserToken = writable(localStorage.currentUserToken)
+	$: localStorage.currentUserToken = currentUserToken
 
 	let currentUser = writable()
 	$: console.log('currentUser:', $currentUser)
-	// $currentUser = {
-	// 	firstName: 'Musty',
-	// 	lastName: 'Mustang'
-	// }
+	// $currentUser = { firstName: 'Musty', lastName: 'Mustang' }
+	$: if($currentUserToken)
+		API.user.getCurrentUser($currentUserToken)
+			.then(_ => $currentUser = _)
+
+	let isShowingLoginRegister = false
+	$: if($currentUser)
+		isShowingLoginRegister = false
+
 
 	let events = writable([])
 
@@ -23,9 +29,10 @@
 	$: console.log('currentEvent:', $currentEvent)
 
 	const logOut = async function(){
-		const result = await API.user.login.logout()
+		const result = await API.login.logout()
 		console.log(result)
-		$currentUser = undefined
+		if(result)
+			$currentUser = undefined
 	}
 </script>
 
@@ -53,7 +60,7 @@
 	{#if sidebarIsOpen}
 		<aside>
 			{#if isShowingLoginRegister}
-				<Login {currentUser} />
+				<Login {currentUserToken} />
 			{/if}
 			<Events {currentUser} {events} {currentEvent} />
 		</aside>

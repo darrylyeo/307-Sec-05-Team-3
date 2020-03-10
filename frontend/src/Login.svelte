@@ -1,7 +1,7 @@
 <script>
 	import { API } from './api.js'
 
-	export let currentUser
+	export let currentUserToken
 
 	let isSigningUp = true
 
@@ -13,12 +13,12 @@
 	}
 
 	const onSignupSubmit = async function(e){
-		const result = await API.user.register.newUser({
+		const result = await API.user.newUser({
 			...signUpForm,
-			joinDate: Date.now()
+			// joinDate: Date.now()
 		})
-		console.log(result)
-		$currentUser = result.user
+		if(result)
+			$currentUserToken = result
 	}
 
 
@@ -28,9 +28,9 @@
 	}
 
 	const onLoginSubmit = async function(e){
-		const result = await API.user.login.authenticate(logInForm)
+		const result = await API.login.authenticate(logInForm)
 		console.log(result)
-		$currentUser = result.user
+		$currentUserToken = result
 	}
 </script>
 

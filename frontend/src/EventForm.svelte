@@ -1,5 +1,5 @@
 <script>
-	import { eventModel } from 'event.js'
+	import { eventModel } from './event.js'
 
 	export let newEvent = {
 		name: 'Ada',
@@ -12,7 +12,7 @@
 {#each formFields as {fieldName, type}}
 	<label>
 		<span>{fieldName}</span>
-		<input {type} bind:value={newEvent[fieldName]}>
+		<!-- <input {type} bind:value={newEvent[fieldName]}> -->
 	</label>
 {/each}
 
