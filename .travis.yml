@@ -32,4 +32,4 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 script:
-  cd frontend; node test/test.js
+  cd frontend; yarn run build; node test/test.js
