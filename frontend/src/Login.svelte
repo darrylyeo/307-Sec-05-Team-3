@@ -56,7 +56,7 @@
 			<span>Last Name</span>
 			<input type="text" bind:value={signUpForm.lastName}>
 		</label>
-		<button type="submit" disabled={!!(logInForm.username && logInForm.password)}>Sign Up</button>
+		<button type="submit" disabled={!Object.values(signUpForm).every(_ => _)}>Sign Up</button>
 	</form>
 {:else}
 	<form on:submit|preventDefault={onLoginSubmit}>
@@ -70,6 +70,6 @@
 			<span>Password</span>
 			<input type="password" bind:value={logInForm.password}>
 		</label>
-		<button type="submit" disabled={!!(logInForm.username && logInForm.password)}>Log In</button>
+		<button type="submit" disabled={!Object.values(logInForm).every(_ => _)}>Log In</button>
 	</form>
 {/if}

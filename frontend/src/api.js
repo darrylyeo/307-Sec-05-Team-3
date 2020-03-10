@@ -77,7 +77,6 @@ export const API = {
 				username,
 				password
 			}))
-			.then(_ => _.Status)
 		},
 
 		logout(){

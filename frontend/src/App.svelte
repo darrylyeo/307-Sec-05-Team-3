@@ -9,7 +9,7 @@
 	let sidebarIsOpen = true
 
 	let currentUserToken = writable(localStorage.currentUserToken)
-	$: localStorage.currentUserToken = currentUserToken
+	$: localStorage.currentUserToken = $currentUserToken
 
 	let currentUser = writable()
 	$: console.log('currentUser:', $currentUser)
