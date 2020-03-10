@@ -11,7 +11,7 @@
 	let currentUserToken = writable(localStorage.currentUserToken)
 	$: localStorage.currentUserToken = $currentUserToken
 	$: if($currentUserToken)
-		API.user.getCurrentUser($currentUserToken)
+		API.login.getCurrentUser($currentUserToken)
 			.then(_ => $currentUser = _)
 	else $currentUser = undefined
 

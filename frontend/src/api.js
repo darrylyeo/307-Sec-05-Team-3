@@ -78,15 +78,9 @@ export const API = {
 				password
 			}))
 		},
-
-		logout(){
-			return GET(`api/login/logout`).then(_ => _.Status)
-		}
-	},
-	
-	user: {
+		
 		getCurrentUser(token){
-			return POST(`api/user/getCurrentUser`, {
+			return POST(`api/login/getCurrentUser`, {
 
 			}, {
 				credentials: 'include',
@@ -96,6 +90,12 @@ export const API = {
 			})
 		},
 
+		logout(){
+			return GET(`api/login/logout`).then(_ => _.Status)
+		}
+	},
+	
+	user: {
 		newUser(user){
 			// return POST(`user/newUser`, user)
 			return POST(`api/user/newUser`, {
