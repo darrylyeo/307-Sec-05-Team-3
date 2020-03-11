@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from 'svelte'
 	import leaflet from 'leaflet'
+
+	import { mapCenter, mapClick } from './map-state.js'
  
 	export let events = [], currentEvent
 	
@@ -26,6 +28,14 @@
 			console.log('popupclose', e)
 
 			$currentEvent = undefined
+		})
+		.on('move', e => {
+			console.log('move', e.latlng)
+			$mapCenter = e.latlng
+		})
+		.on('click', e => {
+			console.log('click', e.latlng)
+			$mapClick = e.latlng
 		})
 		console.log('map', map)
 		

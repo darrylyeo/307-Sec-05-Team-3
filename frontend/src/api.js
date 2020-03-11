@@ -81,11 +81,12 @@ export const API = {
 		
 		getCurrentUser(token){
 			return GET(`api/login/getCurrentUser`, {
-				credentials: 'include',
+				// credentials: 'include',
 				headers: {
 					'Authorization': `Bearer ${token}`
 				}
 			})
+			.then(_ => _.CurrentUser && lowerCaseKeys(_.CurrentUser))
 		},
 
 		logout(){
@@ -157,10 +158,10 @@ export const API = {
 		},
 
 		postNewEvent(event, user){
-			return POST(`api/event/postNewEvent?EventId`, {
+			return POST(`api/event/postNewEvent`, {
 				"NewEvent": upperCaseKeys({
 					// "listingId": 1,
-					"userId": user.id,
+					"userId": user.userId,
 					// "title": "sample string 3",
 					// "description": "sample string 4",
 					// "startTime": "2020-03-09T03:40:18.821177+00:00",

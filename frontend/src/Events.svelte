@@ -1,6 +1,7 @@
 <script>
 	import { API } from './api.js'
 	import Event from './Event.svelte'
+	import EventForm from './EventForm.svelte'
 
 	export let events, currentEvent, currentUser
 	
@@ -26,12 +27,18 @@
 
 <div id="events">
 	<div>
+		{#if isCreatingNewEvent}
+			<h2>New Event</h2>
+			<EventForm />
+		{/if}
+
 		<div>
 			<h2>Upcoming Events</h2>
 			{#if currentUser}
 				<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
 			{/if}
 		</div>
+
 		<div>
 			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
 			{#if currentUser}

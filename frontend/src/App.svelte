@@ -93,10 +93,13 @@
 	main {
 		grid-auto-flow: column;
 		grid-template-columns: 1fr 25rem;
+		overflow: hidden;
 	}
 	
 	aside {
 		background-color: rgba(220, 235, 174, 0.8);
+		overflow-y: auto;
+		grid-auto-rows: max-content;
 	}
 	aside > * {
 		background: linear-gradient(rgba(255, 255, 255, 0.25), transparent);
