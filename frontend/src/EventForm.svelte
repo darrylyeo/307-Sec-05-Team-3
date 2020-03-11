@@ -2,25 +2,23 @@
 	import { API } from './api.js'
 	import { mapCenter, mapClick } from './map-state.js'
 
-	const dateKey = Symbol()
-	const timeKey = Symbol()
+	const startTime = {
+		date: new Date().toISOString().split(/[A-Z]/)[0],
+		time: new Date().toISOString().split(/[A-Z]/)[1].replace(/:[^:]+?$/, ''),
+	}
+	const endTime = {
+		date: new Date().toISOString().split(/[A-Z]/)[0],
+		time: new Date().toISOString().split(/[A-Z]/)[1].replace(/:[^:]+?$/, ''),
+	}
 
 	const newEvent = {
 		title: '',
 		description: '',
-		startTime: {
-			[dateKey]: new Date().toISOString().split(/[A-Z]/)[0],
-			[timeKey]: new Date().toISOString().split(/[A-Z]/)[1],
-			toString(){
-				return new Date(this.date, this.time)
-			}
+		get startTime(){
+			return new Date(startTime.date + startTime.time).toISOString().replace('T', ' ').replace('Z', '')
 		},
-		endTime: {
-			[dateKey]: new Date().toISOString().split(/[A-Z]/)[0],
-			[timeKey]: new Date().toISOString().split(/[A-Z]/)[1],
-			toString(){
-				return new Date(this.date, this.time)
-			}
+		get endTime(){
+			return new Date(endTime.date + endTime.time).toISOString().replace('T', ' ').replace('Z', '')
 		},
 		locX: $mapCenter && $mapCenter.lat,
 		locY: $mapCenter && $mapCenter.lng,
@@ -51,8 +49,8 @@
 	<label>
 		<span>Start Time</span>
 		<span>
-			<input type="date" bind:value={newEvent.startTime[dateKey]} />
-			<input type="time" bind:value={newEvent.startTime[timeKey]} />
+			<input type="date" bind:value={startTime.date} />
+			<input type="time" bind:value={startTime.time} />
 		</span>
 		<!-- <input type="text" bind:value={newEvent.startTime} format="\d?\d:\d\d [AP]M" /> -->
 	</label>
@@ -60,15 +58,18 @@
 	<label>
 		<span>End Time</span>
 		<span>
-			<input type="date" bind:value={newEvent.endTime[dateKey]} />
-			<input type="time" bind:value={newEvent.endTime[timeKey]} />
+			<input type="date" bind:value={endTime.date} />
+			<input type="time" bind:value={endTime.time} />
 		</span>
 		<!-- <input type="text" bind:value={newEvent.endTime} format="\d?\d:\d\d [AP]M" /> -->
 	</label>
 
 	<label>
 		<span>Location (Click on the map)</span>
-		<span><input type="number" bind:value={newEvent.locX} step=".000000000000001" placeholder="Latitude" />, <input type="number" bind:value={newEvent.locY} step=".000000000000001" placeholder="Longitude" /></span>
+		<span>
+			<input type="number" bind:value={newEvent.locX} step=".000000000000001" placeholder="Latitude" />
+			<input type="number" bind:value={newEvent.locY} step=".000000000000001" placeholder="Longitude" />
+		</span>
 	</label>
 
 	<button type="submit">Post Event</button>

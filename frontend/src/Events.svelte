@@ -25,27 +25,33 @@
 	import { fly } from 'svelte/transition'
 </script>
 
-<div id="events">
+{#if isCreatingNewEvent}
+<div>
+	<span>
+		<h2>New Event</h2>
+		<button>Cancel</button>
+	</span>
+	<EventForm />
+</div>
+{/if}
+
+<div>
 	<div>
-		{#if isCreatingNewEvent}
-			<h2>New Event</h2>
-			<EventForm />
+		<h2>Upcoming Events</h2>
+		{#if currentUser}
+			<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
 		{/if}
-
-		<div>
-			<h2>Upcoming Events</h2>
-			{#if currentUser}
-				<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
-			{/if}
-		</div>
-
-		<div>
-			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
-			{#if currentUser}
-				<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
-			{/if}
-		</div>
 	</div>
+
+	<div>
+		<input type="search" placeholder="Search events..." bind:value={searchFilter} />
+		{#if currentUser}
+			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
+		{/if}
+	</div>
+</div>
+
+<div id="events">
 	{#await getEvents}
 		<p transition:fly={{y: -30}}>Looking for events...</p>
 	{:then events}
