@@ -24,10 +24,22 @@
 			: str
 		
 	
+	$: isEditable = $currentUser && ($currentUser.isAdmin || $currentUser.userId === event.userId)
 	let isEditing = false
+	let isDeleting = false
 
-	const onSubmit = async function({detail: event}){
+	$: if(isDeleting)
+		setTimeout(() => isDeleting = false, 5000)
+	
+
+	const onUpdateSubmit = async function(){
 		const result = await API.event.updateEvent(event, $currentUser.token)
+		console.log(result)
+		isEditing = false
+	}
+
+	const onDelete = async function(){
+		const result = await API.event.deleteEvent(event, $currentUser.token)
 		console.log(result)
 	}
 
@@ -40,14 +52,23 @@
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlight(event.description)}</p>
 	<div class="actions">
-		{#if $currentUser && $currentUser.userId === event.userId}
+		{#if isEditable}
 			<button on:click={() => isEditing = true}>Edit</button>
+
+			<!-- <button on:click={isDeleting ? onDelete : () => isDeleting = true} class="destructive">
+				{isDeleting ? 'Really Delete?' : 'Delete'}
+			</button> -->
+			{#if isDeleting}
+				<button on:click={onDelete} class="destructive">Really Delete?</button>
+			{:else}
+				<button on:click={() => isDeleting = true}>Delete</button>
+			{/if}
 		{/if}
 	</div>
 </div>
 
 {#if isEditing}
-	<EventForm {event} submitLabel="Save Changes" on:submit={onSubmit} />
+	<EventForm {event} submitLabel="Save Changes" on:submit={onUpdateSubmit} />
 {/if}
 
 <style>
@@ -81,10 +102,10 @@
 		position: absolute;
 		right: 0;
 		display: grid;
-		gap: 0.2rem;
+		gap: 0.3rem;
 		padding: 1rem;
 	}
-	.event:not(:hover) .actions {
+	.event:not(:hover):not(:focus-within) .actions {
 		opacity: 0;
 	}
 </style>

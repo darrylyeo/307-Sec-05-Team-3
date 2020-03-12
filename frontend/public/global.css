@@ -208,6 +208,19 @@ form > * > span:first-child {
 }
 
 
+:disabled {
+	opacity: 0.5;
+}
+
+.destructive {
+	background-color: #ff221199;
+	color: white;
+}
+.destructive:hover {
+	background-color: #ff2211;
+}
+
+
 .error {
 	color: #ff2211;
 }

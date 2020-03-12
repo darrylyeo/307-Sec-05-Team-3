@@ -43,7 +43,7 @@ const GET = (path, options = {}) => {
 		},
 		body: JSON.stringify(upperCaseKeys(options.body))
 	}
-	console.log(options)
+	console.trace(path, options)
 
 	return fetch(API_URL + '/' + path, options)
 		.then(result => result.json())
@@ -182,12 +182,12 @@ export const API = {
 
 		deleteEvent(event, token){
 			return DELETE(`api/event/deleteEvent`, {
-				"eventIdToDelete": event.id
+				"eventIdToDelete": event.listingId
 			}, makeTokenHeaders(token))
 		},
 
 		getEventsByUser(user){
-			return this.getEventsByUserId(user.id)
+			return this.getEventsByUserId(user.userId)
 		},
 		getEventsByUserId(userID){
 			return GET(`api/event/getEventsByUserId?UserId=${userID}`)
