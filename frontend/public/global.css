@@ -113,6 +113,8 @@ aside {
 }
 aside > * {
 	background: linear-gradient(rgba(255, 255, 255, 0.25), transparent);
+    display: grid;
+	grid-gap: 1px;
 }
 aside > * > * {
 	padding: 1rem;
@@ -142,7 +144,10 @@ input[type=radio] {
 	position: fixed;
 }
 input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time],
-input[type=radio] + span, button, textarea {
+input[type=radio] + span,
+button,
+input[type=submit],
+textarea {
 	-webkit-appearance: none;
 	border: none;
 	border-radius: 0.3em;
@@ -153,6 +158,9 @@ input[type=radio] + span, button, textarea {
 
 	background-color: rgba(255, 255, 255, 0.7);
 }
+input[type=submit] {
+	background-color: rgba(255, 255, 255, 0.9);
+}
 input:hover, button:hover, textarea:hover {
 	background-color: rgba(255, 255, 255, 1);
 }
@@ -160,6 +168,7 @@ input:hover, button:hover, textarea:hover {
 	input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time],
 	input[type=radio] + span, button, textarea {
 		background-color: transparent;
+		background-color: rgba(255, 255, 255, 0.6);
 		/* backdrop-filter: brightness(200%); */
 		backdrop-filter: brightness(150%);
 		transition: 0.2s;
@@ -208,9 +217,25 @@ form > * > span:first-child {
 }
 
 
+::-webkit-input-placeholder {
+	opacity: 0.5;
+}
+::-webkit-placeholder {
+	opacity: 0.5;
+}
+::placeholder {
+	opacity: 0.5;
+}
+
 :disabled {
 	opacity: 0.5;
 }
+
+
+hr {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
 
 .destructive {
 	background-color: #ff221199;

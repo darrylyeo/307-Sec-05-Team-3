@@ -81,5 +81,5 @@
 		</span>
 	</div>
 
-	<button type="submit">{submitLabel}</button>
+	<input type="submit" vale={submitLabel}>
 </form>

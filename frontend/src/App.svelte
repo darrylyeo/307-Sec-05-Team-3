@@ -65,7 +65,9 @@
 	{#if sidebarIsOpen}
 		<aside>
 			{#if isShowingLoginRegister}
+			<div>
 				<Login {currentUserToken} />
+			</div>
 			{/if}
 			<Events {currentUser} {events} {currentEvent} />
 		</aside>

@@ -38,38 +38,49 @@
 	<form on:submit|preventDefault={onSignupSubmit}>
 		<div>
 			<h2>Sign Up</h2>
-			<button on:click={() => isSigningUp = false}>I have an account</button>
+			<button on:click={() => isSigningUp = false}>I already have an account</button>
 		</div>
 		<label>
-			<span>Username</span>
-			<input type="text" bind:value={signUpForm.username}>
-		</label>
-		<label>
-			<span>Password</span>
-			<input type="password" bind:value={signUpForm.password}>
-		</label>
-		<label>
 			<span>First Name</span>
-			<input type="text" bind:value={signUpForm.firstName}>
+			<input type="text" bind:value={signUpForm.firstName} placeholder="Musty">
 		</label>
 		<label>
 			<span>Last Name</span>
-			<input type="text" bind:value={signUpForm.lastName}>
+			<input type="text" bind:value={signUpForm.lastName} placeholder="Mustang">
 		</label>
-		<button type="submit" disabled={!Object.values(signUpForm).every(_ => _)}>Sign Up</button>
-	</form>
-{:else}
-	<form on:submit|preventDefault={onLoginSubmit}>
-		<h2>Log In</h2>
-		<button on:click={() => isSigningUp = true}>I don't have an account</button>
 		<label>
 			<span>Username</span>
-			<input type="text" bind:value={logInForm.username}>
+			<input type="text" bind:value={signUpForm.username} placeholder="musty_mustang">
 		</label>
 		<label>
 			<span>Password</span>
-			<input type="password" bind:value={logInForm.password}>
+			<input type="password" bind:value={signUpForm.password} placeholder="6 characters or more"><!-- pattern="......" -->
 		</label>
-		<button type="submit" disabled={!Object.values(logInForm).every(_ => _)}>Log In</button>
+		<hr>
+		<input type="submit" disabled={!Object.values(signUpForm).every(_ => _)} value="Sign Up">
+	</form>
+{:else}
+	<form on:submit|preventDefault={onLoginSubmit}>
+		<div>
+			<h2>Log In</h2>
+			<button on:click={() => isSigningUp = true}>I don't have an account</button>
+		</div>
+		<label>
+			<span>Username</span>
+			<input type="text" bind:value={logInForm.username} placeholder="musty_mustang">
+		</label>
+		<label>
+			<span>Password</span>
+			<input type="password" bind:value={logInForm.password} placeholder="6 characters or more">
+		</label>
+		<hr>
+		<input type="submit" disabled={!Object.values(logInForm).every(_ => _)} value="Log In">
 	</form>
 {/if}
+
+
+<style>
+	div {
+		display: flex;
+	}
+</style>
