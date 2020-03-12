@@ -117,9 +117,14 @@
 		margin: 0;
 	}
 	:global(.leaflet-popup-content) {
+		background: none;
+		box-shadow: none;
 		/* padding: 0.65rem; */
 
 		display: grid;
 		gap: 0.25rem;
+	}
+	:global(.leaflet-popup-content .event) {
+		background: none;
 	}
 </style>

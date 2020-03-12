@@ -69,7 +69,7 @@
 	</div>
 
 	{#await getEvents}
-		<p transition:fly={{y: -30}}>Looking for events...</p>
+			<p transition:fly={{y: -30}}>Loading events...</p>
 	{:then events}
 		{#each filterEvents(events) as event (event.listingId)}
 			<Event
