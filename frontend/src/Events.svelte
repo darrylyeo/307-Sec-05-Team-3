@@ -55,14 +55,14 @@
 	<div class="sticky upcoming-events">
 		<div>
 			<h2>Upcoming Events</h2>
-			{#if currentUser}
+			{#if $currentUser}
 				<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
 			{/if}
 		</div>
 
 		<div>
 			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
-			{#if currentUser}
+			{#if $currentUser}
 				<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
 			{/if}
 		</div>
