@@ -39,6 +39,8 @@
 		if(result)
 			$currentUserToken = undefined
 	}
+
+	import { fly } from 'svelte/transition'
 </script>
 
 <header>
@@ -65,7 +67,7 @@
 	{#if sidebarIsOpen}
 		<aside>
 			{#if isShowingLoginRegister}
-			<div>
+			<div transition:fly={{y: -100}}>
 				<Login {currentUserToken} />
 			</div>
 			{/if}

@@ -44,10 +44,31 @@
 	}
 
 
-	import { fly } from 'svelte/transition'
+	// import { fly } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
+	import { quintOut } from 'svelte/easing';
+	import { crossfade } from 'svelte/transition';
+
+	const [send, receive] = crossfade({
+		duration: d => Math.sqrt(d * 200),
+
+		fallback(node, params) {
+			const style = getComputedStyle(node);
+			const transform = style.transform === 'none' ? '' : style.transform;
+
+			return {
+				duration: 600,
+				easing: quintOut,
+				css: t => `
+					transform: ${transform} scale(${t});
+					opacity: ${t}
+				`
+			};
+		}
+	})
 </script>
 
-<div class="event" class:is-focused={isFocused} transition:fly={{y: 300}} on:click>
+<div class="event" class:is-focused={isFocused} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
 	<h3>{@html highlight(event.title)}</h3>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlight(event.description)}</p>

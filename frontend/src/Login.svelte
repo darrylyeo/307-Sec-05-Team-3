@@ -35,11 +35,11 @@
 </script>
 
 {#if isSigningUp}
+	<div class="sticky">
+		<h2>Sign Up</h2>
+		<button on:click={() => isSigningUp = false}>I already have an account</button>
+	</div>
 	<form on:submit|preventDefault={onSignupSubmit}>
-		<div>
-			<h2>Sign Up</h2>
-			<button on:click={() => isSigningUp = false}>I already have an account</button>
-		</div>
 		<label>
 			<span>First Name</span>
 			<input type="text" bind:value={signUpForm.firstName} placeholder="Musty">
@@ -60,11 +60,11 @@
 		<input type="submit" disabled={!Object.values(signUpForm).every(_ => _)} value="Sign Up">
 	</form>
 {:else}
+	<div class="sticky">
+		<h2>Log In</h2>
+		<button on:click={() => isSigningUp = true}>I don't have an account</button>
+	</div>
 	<form on:submit|preventDefault={onLoginSubmit}>
-		<div>
-			<h2>Log In</h2>
-			<button on:click={() => isSigningUp = true}>I don't have an account</button>
-		</div>
 		<label>
 			<span>Username</span>
 			<input type="text" bind:value={logInForm.username} placeholder="musty_mustang">

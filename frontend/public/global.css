@@ -127,6 +127,17 @@ aside > * > * {
 	backdrop-filter: blur(6px) opacity(100%);
     background-color: rgba(255, 255, 255, 0.3);
 }
+.sticky {
+	display: grid;
+	grid-auto-flow: row;
+	grid-gap: 0.65em;
+}
+.sticky > * {
+	display: grid;
+	grid-auto-flow: column;
+	grid-gap: 0.5em;
+	align-items: center;
+}
 
 
 .radio-group {

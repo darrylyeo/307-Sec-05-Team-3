@@ -38,13 +38,16 @@
 
 
 	import { fly } from 'svelte/transition'
+	import { flip } from 'svelte/animate'
 </script>
 
 {#if isCreatingNewEvent}
 <div>
-	<div>
-		<h2>New Event</h2>
-		<button>Cancel</button>
+	<div class="sticky">
+		<div>
+			<h2>New Event</h2>
+			<button>Cancel</button>
+		</div>
 	</div>
 	
 	<EventForm submitLabel="Post Event" on:submit={onSubmit} />
@@ -69,7 +72,7 @@
 	</div>
 
 	{#await getEvents}
-			<p transition:fly={{y: -30}}>Loading events...</p>
+		<p transition:fly={{y: -30}}>Loading events...</p>
 	{:then events}
 		{#each filterEvents(events) as event (event.listingId)}
 			<Event
@@ -90,16 +93,4 @@
 </div>
 
 <style>
-	.upcoming-events {
-		padding: 1rem;
-		display: grid;
-		grid-auto-flow: row;
-		grid-gap: 0.65em;
-	}
-	.upcoming-events > * {
-		display: grid;
-		grid-auto-flow: column;
-		grid-gap: 0.5em;
-		align-items: center;
-	}
 </style>

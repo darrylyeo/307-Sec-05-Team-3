@@ -31,7 +31,7 @@
 		event.endTime = endTime.toString()
 	}
 
-	$: {
+	$: if($mapClick){
 		event.locX = $mapClick.lat.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lat - $mapClick.lat % LOCATION_PRECISION
 		event.locY = $mapClick.lng.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lng - $mapClick.lng % LOCATION_PRECISION
 	}
