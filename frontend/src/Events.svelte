@@ -22,6 +22,14 @@
 			)
 			: events
 
+	
+	const onSubmit = async function({detail: newEvent}){
+		console.log(newEvent, $currentUser.token)
+		const result = await API.event.postNewEvent(newEvent, $currentUser.token)
+		console.log(result)
+	}
+
+
 	import { fly } from 'svelte/transition'
 </script>
 
@@ -31,7 +39,8 @@
 		<h2>New Event</h2>
 		<button>Cancel</button>
 	</span>
-	<EventForm />
+	
+	<EventForm on:submit={onSubmit} />
 </div>
 {/if}
 

@@ -13,7 +13,8 @@
 
 body,
 header, main, footer, section,
-nav, aside {
+nav, aside,
+h2, h3 {
 	display: grid;
 	place-self: stretch;
 }
@@ -57,7 +58,8 @@ label {
 
 
 form {
-	padding: 1rem;
+	/* background-color: rgba(255, 255, 255, 0.2);
+	padding: 0.5rem; */
 	gap: 1rem;
 	
 	display: grid;
@@ -72,6 +74,43 @@ form > * {
 }
 
 
+nav, aside {
+	position: relative;
+	z-index: 1;
+
+	backdrop-filter: blur(3px) hue-rotate(80deg);
+}
+nav {
+	background-color: rgba(155, 224, 142, 0.8);
+
+	grid-auto-flow: column;
+	grid-template-columns: 1fr auto;
+	grid-gap: 1em;
+	padding: 1em;
+}
+
+#logo {
+	font-weight: normal;
+	text-transform: uppercase;
+	color: #254100;
+}
+
+main {
+	grid-auto-flow: column;
+	grid-template-columns: 1fr 25rem;
+	overflow: hidden;
+}
+
+aside {
+	background-color: rgba(220, 235, 174, 0.8);
+	overflow-y: auto;
+	grid-auto-rows: max-content;
+}
+aside > * {
+	background: linear-gradient(rgba(255, 255, 255, 0.25), transparent);
+}
+
+
 .radio-group {
 	display: grid;
 	overflow-x: auto;
@@ -79,14 +118,14 @@ form > * {
 	grid-template-columns: repeat(auto-fit, minmax(2.7rem, 1fr));
 	gap: 0.5em;
 }
-input {
-	font-size: inherit;
+input, textarea {
+	font: inherit;
 }
 input[type=radio] {
 	visibility: hidden;
 	position: fixed;
 }
-input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search],
+input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time],
 input[type=radio] + span, button, textarea {
 	-webkit-appearance: none;
 	border: none;
@@ -102,7 +141,7 @@ input:hover, button:hover, textarea:hover {
 	background-color: rgba(255, 255, 255, 1);
 }
 @supports (backdrop-filter: brightness(150%)) {
-	input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search],
+	input[type=text], input[type=password], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time],
 	input[type=radio] + span, button, textarea {
 		background-color: transparent;
 		/* backdrop-filter: brightness(200%); */
@@ -114,6 +153,10 @@ input:hover, button:hover, textarea:hover {
 	input:hover, button:hover, textarea:hover {
 		backdrop-filter: brightness(180%);
 	}
+}
+
+input[type=number], input[type=date], input[type=time] {
+	max-width: 47%;
 }
 
 input[type=radio]:checked + span {
@@ -141,7 +184,7 @@ button {
 label {
 	gap: 0.3em;
 }
-label span:first-child {
+form > * > span:first-child {
 	opacity: 0.5;
 	font-size: 0.7em;
 	text-transform: uppercase;

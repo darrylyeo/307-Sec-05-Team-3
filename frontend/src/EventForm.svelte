@@ -1,24 +1,26 @@
 <script>
-	import { API } from './api.js'
 	import { mapCenter, mapClick } from './map-state.js'
+	
+	import { createEventDispatcher } from 'svelte'
+	const dispatch = createEventDispatcher()
 
 	const startTime = {
 		date: new Date().toISOString().split(/[A-Z]/)[0],
 		time: new Date().toISOString().split(/[A-Z]/)[1].replace(/:[^:]+?$/, ''),
 	}
 	const endTime = {
-		date: new Date().toISOString().split(/[A-Z]/)[0],
-		time: new Date().toISOString().split(/[A-Z]/)[1].replace(/:[^:]+?$/, ''),
+		date: new Date(Date.now() + 60 * 60 * 1000).toISOString().split(/[A-Z]/)[0],
+		time: new Date(Date.now() + 60 * 60 * 1000).toISOString().split(/[A-Z]/)[1].replace(/:[^:]+?$/, ''),
 	}
 
 	const newEvent = {
 		title: '',
 		description: '',
 		get startTime(){
-			return new Date(startTime.date + startTime.time).toISOString().replace('T', ' ').replace('Z', '')
+			return new Date(startTime.date + ' ' + startTime.time).toISOString().replace('T', ' ').replace('Z', '')
 		},
 		get endTime(){
-			return new Date(endTime.date + endTime.time).toISOString().replace('T', ' ').replace('Z', '')
+			return new Date(endTime.date + ' ' + endTime.time).toISOString().replace('T', ' ').replace('Z', '')
 		},
 		locX: $mapCenter && $mapCenter.lat,
 		locY: $mapCenter && $mapCenter.lng,
@@ -30,8 +32,7 @@
 	}
 
 	const onSubmit = async function(e){
-		const result = await API.event.postNewEvent(newEvent, {userId: 9})
-		console.log(result)
+		dispatch('submit', newEvent)
 	}
 </script>
 
@@ -64,13 +65,13 @@
 		<!-- <input type="text" bind:value={newEvent.endTime} format="\d?\d:\d\d [AP]M" /> -->
 	</label>
 
-	<label>
+	<div>
 		<span>Location (Click on the map)</span>
 		<span>
 			<input type="number" bind:value={newEvent.locX} step=".000000000000001" placeholder="Latitude" />
 			<input type="number" bind:value={newEvent.locY} step=".000000000000001" placeholder="Longitude" />
 		</span>
-	</label>
+	</div>
 
 	<button type="submit">Post Event</button>
 </form>

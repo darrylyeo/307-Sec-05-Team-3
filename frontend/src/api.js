@@ -31,21 +31,24 @@ POST user/register/newUser
 Register a new user.
 */
 
-const API_URL = `https://campusnowbackend.azurewebsites.net` // `http://campusnow.tech`
+const API_URL = `https://campusnowbackend.azurewebsites.net` // `http://api.campusnow.tech`
 
-const GET = (path, options = {}) =>
-	fetch(API_URL + '/' + path, {
+const GET = (path, options = {}) => {
+	if(options.body) options = {
 		...options,
-		...options.body ? console.log(upperCaseKeys(options.body))||{
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(upperCaseKeys(options.body))
-		} : {}
-	})
-	.then(result => result.json())
-	// .then(lowerCaseKeys)
+		headers: {
+			...options.headers || {},
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(upperCaseKeys(options.body))
+	}
+	console.log(options)
+
+	return fetch(API_URL + '/' + path, options)
+		.then(result => result.json())
+		// .then(lowerCaseKeys)
+}
 
 const POST = (path, body, options) =>
 	GET(path, {...options, body, method: 'POST'})
@@ -55,6 +58,15 @@ const PUT = (path, body, options) =>
 
 const DELETE = (path, body, options) =>
 	GET(path, {...options, body, method: 'DELETE'})
+
+
+const makeTokenHeaders = token => ({
+	// credentials: 'include',
+	headers: {
+		'Authorization': `Bearer ${token}`
+	}
+})
+
 
 if(!Object.fromEntries) Object.fromEntries = iterable => {
 	const obj = {}
@@ -70,6 +82,7 @@ const upperCaseKeys = obj => Object.fromEntries(Object.entries(obj).map(
 	([k, v]) => [k[0].toUpperCase() + k.slice(1), typeof v === 'object' ? upperCaseKeys(v) : v]
 ))
 
+
 export const API = {
 	login: {
 		authenticate({username, password}){
@@ -80,17 +93,13 @@ export const API = {
 		},
 		
 		getCurrentUser(token){
-			return GET(`api/login/getCurrentUser`, {
-				// credentials: 'include',
-				headers: {
-					'Authorization': `Bearer ${token}`
-				}
-			})
-			.then(_ => _.CurrentUser && lowerCaseKeys(_.CurrentUser))
+			return GET(`api/login/getCurrentUser`, makeTokenHeaders(token))
+				.then(_ => _.CurrentUser && lowerCaseKeys(_.CurrentUser))
 		},
 
 		logout(){
-			return GET(`api/login/logout`).then(_ => _.Status)
+			return GET(`api/login/logout`)
+				.then(_ => _.Status)
 		}
 	},
 	
@@ -115,7 +124,7 @@ export const API = {
 	event: {
 		getAllEvents(){
 			return GET(`api/event/getAllEvents`)
-				.catch(e => ({
+				/*.catch(e => ({
 					"Events": [
 						{
 							"ListingId": 1,
@@ -148,7 +157,7 @@ export const API = {
 							"LocY": 8.1
 						}
 					]
-				}))
+				}))*/
 				.then(_ => _.EventRecords).then(_ => _.map(lowerCaseKeys))
 		},
 
@@ -157,20 +166,10 @@ export const API = {
 				.then(_ => _.Events).then(_ => _.map(lowerCaseKeys))
 		},
 
-		postNewEvent(event, user){
+		postNewEvent(event, token){
 			return POST(`api/event/postNewEvent`, {
-				"NewEvent": upperCaseKeys({
-					// "listingId": 1,
-					"userId": user.userId,
-					// "title": "sample string 3",
-					// "description": "sample string 4",
-					// "startTime": "2020-03-09T03:40:18.821177+00:00",
-					// "endTime": "2020-03-09T03:40:18.821177+00:00",
-					// "locX": 7.1,
-					// "locY": 8.1,
-					...event
-				})
-			})
+				"NewEvent": upperCaseKeys(event)
+			}, makeTokenHeaders(token))
 		},
 
 		updateEvent(event){
@@ -190,7 +189,6 @@ export const API = {
 		getEventsByUser(user){
 			return this.getEventsByUserId(user.id)
 		},
-
 		getEventsByUserId(userID){
 			return GET(`api/event/getEventsByUserId?UserId=${userID}`)
 		},
