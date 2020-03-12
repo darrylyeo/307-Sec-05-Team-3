@@ -8,6 +8,8 @@
 	let startTime = new DateTime(Date.now())
 	let endTime = new DateTime(Date.now() + 60 * 60 * 1000)
 
+	const LOCATION_PRECISION = .00001
+
 	export let event = {
 		title: '',
 		description: '',
@@ -30,13 +32,13 @@
 	}
 
 	$: {
-		event.locX = $mapClick.lat
-		event.locY = $mapClick.lng
+		event.locX = $mapClick.lat.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lat - $mapClick.lat % LOCATION_PRECISION
+		event.locY = $mapClick.lng.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lng - $mapClick.lng % LOCATION_PRECISION
 	}
 
 
 	export let submitLabel
-	
+
 	const onSubmit = async function(e){
 		dispatch('submit', event)
 	}
@@ -50,7 +52,7 @@
 
 	<label>
 		<span>Description</span>
-		<textarea bind:value={event.description} placeholder="Meet with recruiters at the Multi-Activity Center" />
+		<textarea bind:value={event.description} placeholder="Meet with recruiters at the Multi-Activity Center" lines="4" />
 	</label>
 
 	<label>
@@ -74,8 +76,8 @@
 	<div>
 		<span>Location (Click on the map)</span>
 		<span>
-			<input type="number" bind:value={event.locX} step=".000000000000001" placeholder="Latitude" />
-			<input type="number" bind:value={event.locY} step=".000000000000001" placeholder="Longitude" />
+			<input type="number" bind:value={event.locX} step={LOCATION_PRECISION} placeholder="Latitude" />
+			<input type="number" bind:value={event.locY} step={LOCATION_PRECISION} placeholder="Longitude" />
 		</span>
 	</div>
 

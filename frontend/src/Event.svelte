@@ -4,7 +4,7 @@
 
 	import EventForm from './EventForm.svelte'
 
-	export let currentUser
+	export let currentUser = undefined
 
 	export let event = {} /*= {
 		title: '',
@@ -15,7 +15,7 @@
 
 	export let isFocused = false
 
-	export let highlightString
+	export let highlightString = ''
 	$: highlightRegex = new RegExp(highlightString, 'gi')
 
 	const highlight = str =>
@@ -51,6 +51,7 @@
 	<h3>{@html highlight(event.title)}</h3>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlight(event.description)}</p>
+
 	<div class="actions">
 		{#if isEditable}
 			<button on:click={() => isEditing = true}>Edit</button>

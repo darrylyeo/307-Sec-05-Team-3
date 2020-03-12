@@ -172,7 +172,7 @@ input:hover, button:hover, textarea:hover {
 }
 
 input[type=number], input[type=date], input[type=time] {
-	max-width: 47%;
+	max-width: 49%;
 }
 
 input[type=radio]:checked + span {

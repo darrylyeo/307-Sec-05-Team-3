@@ -3,11 +3,15 @@
 	import leaflet from 'leaflet'
 
 	import { mapCenter, mapClick } from './map-state.js'
+
+	import Event from './Event.svelte'
  
 	export let events = [], currentEvent
 	
 	let mapElement
 	let markerForEvent = new Map()
+	let eventForMarker = new Map()
+	// let eventElementForPopup = new WeakMap()
 
 	Array.prototype.mapToMap = function(mapFunction){
 		return new Map(
@@ -22,10 +26,25 @@
 			zoom: 17
 		})
 		.on('popupopen', e => {
-			console.log('popupopen', e)
+			console.log('popupopen', e, e.popup.getContent())
+
+			/*const {popup} = e
+			const marker = popup._source
+			if(!eventElementForPopup.has(popup))
+				eventElementForPopup.add(popup, new Event({
+					target: popup.getContent(),
+					props: {
+						event: eventForMarker.get(marker)
+					}
+				}))*/
 		})
 		.on('popupclose', e => {
 			console.log('popupclose', e)
+			
+			/*const {popup} = e
+			if(eventElementForPopup.has(popup))
+				eventElementForPopup.delete(popup)
+			*/
 
 			$currentEvent = undefined
 		})
@@ -45,19 +64,25 @@
 	})
 
 	$: if(map){
-		markerForEvent = $events.mapToMap(event =>
-			leaflet.marker([event.locX, event.locY])
+		markerForEvent = $events.mapToMap(event => {
+			const div = document.createElement('div')
+			new Event({target: div, props: {event}})
+			const marker = leaflet.marker([event.locX, event.locY])
 				.addTo(map)
 				.on('click', function(e){
 					console.log(e)
 				
 					$currentEvent = event
+
+					console.trace(Event+'')
+					console.trace(this, this.getElement(), new Event({target: this.getElement(), props: {event}}))
 				})
-				.bindPopup(`
-					<h3>${event.title}</h3>
-					<p>${event.description}</p>
-				`)
-		)
+				.bindPopup(div)
+			return marker
+		})
+
+		eventForMarker = new Map([...markerForEvent.entries()]
+			.map(([event, marker]) => [marker,event]))
 	}
 
 	$: if(map && $currentEvent){
@@ -78,10 +103,12 @@
 		z-index: 0;
 	}
 
-	:global(.leaflet-popup-content-wrapper) {
+	:global(.leaflet-popup-content-wrapper, .leaflet-popup-tip) {
 		background-color: rgba(255, 255, 255, 0.75);
 		backdrop-filter: blur(3px) hue-rotate(40deg);
 		box-shadow: 0 0.05rem 0.3rem rgba(0, 0, 0, 0.25);
+	}
+	:global(.leaflet-popup-content-wrapper) {
 		border-radius: 0.65em;
 		font-size: 0.75em;
 		padding: 0;
@@ -90,7 +117,7 @@
 		margin: 0;
 	}
 	:global(.leaflet-popup-content) {
-		padding: 0.65rem;
+		/* padding: 0.65rem; */
 
 		display: grid;
 		gap: 0.25rem;

@@ -11,9 +11,10 @@
 	let currentUserToken = writable(localStorage.currentUserToken)
 	$: localStorage.currentUserToken = $currentUserToken
 	$: if($currentUserToken){
-		API.login.getCurrentUser($currentUserToken).then(_ =>
-			$currentUser = {..._, token: $currentUserToken}
-		)
+		API.login.getCurrentUser($currentUserToken).then(user => {
+			if(user)
+				$currentUser = {...user, token: $currentUserToken}
+		})
 	}else{
 		$currentUser = undefined
 	}
@@ -47,7 +48,7 @@
 		{#if $currentUser}
 			<p>
 				<span>Hello, <b>{$currentUser.firstName} {$currentUser.lastName}</b></span>
-				{#if $currentUser.isAdmin}<i title="You're an admin">⭐</i>{/if}
+				{#if $currentUser.isAdmin}<i title="You're an admin! You can edit or delete others' events.">⭐</i>{/if}
 			</p>
 			<button on:click={logOut}>Log Out</button>
 		{:else}
