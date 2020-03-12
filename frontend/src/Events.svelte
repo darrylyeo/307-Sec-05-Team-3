@@ -79,10 +79,14 @@
 		</div>
 		{#if $currentUser}
 		<div>
-			<span>Filter: </span>
-			<button on:click={() => isOnlyShowingUserEvents = isOnlyShowingBookmarkedEvents = false} disabled={!isOnlyShowingUserEvents && !isOnlyShowingBookmarkedEvents}>All Events</button>
-			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents} disabled={!isOnlyShowingUserEvents}>My Events</button>
+			<span>Show: </span>
+
+			<button on:click={() => isOnlyShowingUserEvents = isOnlyShowingBookmarkedEvents = false}>All Events</button>
+			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>My Events</button>
 			<button on:click={() => isOnlyShowingBookmarkedEvents = !isOnlyShowingBookmarkedEvents}>Bookmarks</button>
+			<!-- <button on:click={() => isOnlyShowingUserEvents = isOnlyShowingBookmarkedEvents = false} disabled={isOnlyShowingUserEvents || isOnlyShowingBookmarkedEvents}>All Events</button>
+			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents} disabled={!isOnlyShowingUserEvents}>My Events</button>
+			<button on:click={() => isOnlyShowingBookmarkedEvents = !isOnlyShowingBookmarkedEvents} disabled={!isOnlyShowingBookmarkedEvents}>Bookmarks</button> -->
 		</div>
 		{/if}
 	</div>

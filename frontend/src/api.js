@@ -31,8 +31,8 @@ POST user/register/newUser
 Register a new user.
 */
 
-const API_URL = `https://api.campusnow.tech` // `https://campusnowbackend.azurewebsites.net`
-const API_URL_2 = `https://campusnowbackend.azurewebsites.net`
+const API_URL = `https://campusnowbackend.azurewebsites.net`
+const API_URL_2 = `https://api.campusnow.tech` // `https://campusnowbackend.azurewebsites.net`
 
 const GET = (path, options = {}) => {
 	if(options.body) options = {
