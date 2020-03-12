@@ -8,15 +8,16 @@
 	
 	let isCreatingNewEvent = false
 	let isOnlyShowingUserEvents = false
+	let isOnlyShowingBookmarkedEvents = false
 	let searchFilter = ''
 
 	const refresh = () =>
 		isOnlyShowingUserEvents = isOnlyShowingUserEvents
 
 	$: getEvents = (
-		$currentUser && isOnlyShowingUserEvents
+		/*$currentUser && isOnlyShowingUserEvents
 			? API.event.getEventsByUser($currentUser)
-			: API.event.getAllEvents()
+			:*/ API.event.getAllEvents()
 	)
 		.then(_ => _.map(event => ({
 			...event,
@@ -26,12 +27,17 @@
 		.then(_ => $events = _)
 
 	const filterEvents = events =>
-		searchFilter
-			? events.filter(event =>
+		searchFilter ?
+			events.filter(event =>
 				event.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
 				event.description.toLowerCase().includes(searchFilter.toLowerCase())
 			)
-			: events
+		: isOnlyShowingUserEvents ?
+			events.filter(event => event.userId === $currentUser.userId)
+		: isOnlyShowingBookmarkedEvents ?
+			events.filter(event => event.isBookmarked)
+		:
+			events
 
 	
 	const onSubmit = async function({detail: event}){
@@ -70,10 +76,15 @@
 
 		<div>
 			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
-			{#if $currentUser}
-				<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
-			{/if}
 		</div>
+		{#if $currentUser}
+		<div>
+			<span>Filter: </span>
+			<button on:click={() => isOnlyShowingUserEvents = isOnlyShowingBookmarkedEvents = false} disabled={!isOnlyShowingUserEvents && !isOnlyShowingBookmarkedEvents}>All Events</button>
+			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents} disabled={!isOnlyShowingUserEvents}>My Events</button>
+			<button on:click={() => isOnlyShowingBookmarkedEvents = !isOnlyShowingBookmarkedEvents}>Bookmarks</button>
+		</div>
+		{/if}
 	</div>
 
 	{#await getEvents}

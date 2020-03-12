@@ -87,12 +87,15 @@
 	})
 </script>
 
-<div class="event" class:is-focused={isFocused} class:bookmarked={event.isBookmarked} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
+<div class="event" class:is-focused={isFocused} class:is-bookmarked={event.isBookmarked} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
 	<h3>{@html highlightString ? highlight(event.title) : event.title}</h3>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlightString ? highlight(event.description) : event.title}</p>
 
 	<div class="actions">
+		{#if $currentUser}
+			<button class:is-bookmarked={event.isBookmarked} on:click={() => event.isBookmarked = !event.isBookmarked}>{event.isBookmarked ? 'Bookmarked' : 'Bookmark'}</button>
+		{/if}
 		{#if isEditable}
 			<button on:click={() => isEditing = true}>Edit</button>
 
@@ -104,9 +107,6 @@
 			{:else}
 				<button on:click={() => isDeleting = true}>Delete</button>
 			{/if}
-		{/if}
-		{#if $currentUser}
-			<button on:click={() => event.isBookmarked = !event.isBookmarked}>{event.isBookmarked ? 'Bookmarked' : 'Bookmark'}</button>
 		{/if}
 	</div>
 </div>
@@ -148,12 +148,19 @@
 		display: grid;
 		gap: 0.3rem;
 		padding: 1rem;
+
+		padding: 0.65em;
+		font-size: 0.85em;
 	}
 	.event:not(:hover):not(:focus-within) .actions {
 		opacity: 0;
 	}
 
-	.bookmarked {
-		border-color: white;
+	.event.is-bookmarked {
+		/* box-shadow: inset 0 0 2px #d4ff96; */
+		background-color: rgba(145, 255, 0, 0.5);
+	}
+	button.is-bookmarked {
+		opacity: 0.6;
 	}
 </style>
