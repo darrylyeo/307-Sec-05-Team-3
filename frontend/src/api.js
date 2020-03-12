@@ -187,10 +187,8 @@ export const API = {
 		},
 
 		getEventsByUser(user){
-			return this.getEventsByUserId(user.userId)
-		},
-		getEventsByUserId(userID){
-			return GET(`api/event/getEventsByUserId?UserId=${userID}`)
+			return GET(`api/event/getEventsByUserId?UserId=${user.userId}`)
+				.then(_ => _.Events).then(_ => _.map(lowerCaseKeys))
 		},
 
 		getEventsByTimeRange(startTime, endTime){
