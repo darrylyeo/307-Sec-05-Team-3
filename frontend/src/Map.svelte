@@ -89,7 +89,9 @@
 		console.log('$currentEvent', $currentEvent)
 		// Center map on the marker
 		const marker = markerForEvent.get($currentEvent)
-		map.fitBounds(leaflet.latLngBounds([ marker.getLatLng() ]))
+		if(marker){
+			map.fitBounds(leaflet.latLngBounds([ marker.getLatLng() ]))
+		}
 	}
 </script>
 

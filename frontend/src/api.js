@@ -31,7 +31,8 @@ POST user/register/newUser
 Register a new user.
 */
 
-const API_URL = `https://campusnowbackend.azurewebsites.net` // `http://api.campusnow.tech`
+const API_URL = `https://api.campusnow.tech` // `https://campusnowbackend.azurewebsites.net`
+const API_URL_2 = `https://campusnowbackend.azurewebsites.net`
 
 const GET = (path, options = {}) => {
 	if(options.body) options = {
@@ -46,8 +47,11 @@ const GET = (path, options = {}) => {
 	console.trace(path, options)
 
 	return fetch(API_URL + '/' + path, options)
+		.catch(e => {
+			console.log('Fetch failed, trying other API URL...', e)
+			return fetch(API_URL_2 + '/' + path, options)
+		})
 		.then(result => result.json())
-		// .then(lowerCaseKeys)
 }
 
 const POST = (path, body, options) =>

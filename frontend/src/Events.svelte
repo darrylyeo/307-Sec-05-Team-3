@@ -10,6 +10,9 @@
 	let isOnlyShowingUserEvents = false
 	let searchFilter = ''
 
+	const refresh = () =>
+		isOnlyShowingUserEvents = isOnlyShowingUserEvents
+
 	$: getEvents = (
 		$currentUser && isOnlyShowingUserEvents
 			? API.event.getEventsByUser($currentUser)
@@ -34,6 +37,8 @@
 	const onSubmit = async function({detail: event}){
 		const result = await API.event.postNewEvent(event, $currentUser.token)
 		console.log(result)
+
+		refresh()
 	}
 
 
@@ -81,6 +86,7 @@
 				highlightString={searchFilter}
 				on:click={e => $currentEvent = event}
 				{currentUser}
+				on:eventChange={refresh}
 			/>
 		{:else}
 			<p>No events found.</p>

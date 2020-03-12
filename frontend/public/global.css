@@ -13,9 +13,11 @@
 
 body,
 header, main, footer, section,
-nav, aside,
-h2, h3 {
+nav, aside {
 	display: grid;
+	place-self: stretch;
+}
+h2, h3 {
 	place-self: stretch;
 }
 

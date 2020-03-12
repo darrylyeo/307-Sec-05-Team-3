@@ -34,10 +34,16 @@
 	$: console.log('currentEvent:', $currentEvent)
 
 	const logOut = async function(){
-		const result = await API.login.logout()
-		console.log(result)
-		if(result)
-			$currentUserToken = undefined
+		try {
+			const result = await API.login.logout()
+			console.log(result)
+			if(result){
+				$currentUserToken = undefined
+				$currentUser = undefined
+			}
+		}catch(e){
+			alert(`We couldn't log you out: ${e.message}`)
+		}
 	}
 
 	import { fly } from 'svelte/transition'

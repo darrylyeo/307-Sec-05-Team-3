@@ -13,12 +13,16 @@
 	}
 
 	const onSignupSubmit = async function(e){
-		const result = await API.user.newUser({
-			...signUpForm,
-			// joinDate: Date.now()
-		})
-		if(result)
-			$currentUserToken = result
+		try {
+			const result = await API.user.newUser({
+				...signUpForm,
+				// joinDate: Date.now()
+			})
+			if(result)
+				$currentUserToken = result
+		}catch(e){
+			alert(`We couldn't complete your sign-up: ${e.message}`)
+		}
 	}
 
 
@@ -28,9 +32,13 @@
 	}
 
 	const onLoginSubmit = async function(e){
-		const result = await API.login.authenticate(logInForm)
-		console.log(result)
-		$currentUserToken = result
+		try {
+			const result = await API.login.authenticate(logInForm)
+			console.log(result)
+			$currentUserToken = result
+		}catch(e){
+			alert(`We couldn't log you in: ${e.message}`)
+		}
 	}
 </script>
 

@@ -1,6 +1,9 @@
 <script>
 	import { API } from './api.js'
 	import { formatDate, datesAreSameDay } from './date.js'
+	
+	import { createEventDispatcher } from 'svelte'
+	const dispatch = createEventDispatcher()
 
 	import EventForm from './EventForm.svelte'
 
@@ -33,14 +36,30 @@
 	
 
 	const onUpdateSubmit = async function(){
-		const result = await API.event.updateEvent(event, $currentUser.token)
-		console.log(result)
-		isEditing = false
+		try {
+			const result = await API.event.updateEvent(event, $currentUser.token)
+			console.log(result)
+			
+			if(result.ExceptionMessage){
+				alert(`We couldn't update your event: ${result.ExceptionMessage}`)
+			}else{
+				isEditing = false
+				dispatch('eventChange')
+			}
+		}catch(e){
+			alert(`We couldn't update your event: ${e.message}`)
+		}
 	}
 
 	const onDelete = async function(){
-		const result = await API.event.deleteEvent(event, $currentUser.token)
-		console.log(result)
+		try {
+			const result = await API.event.deleteEvent(event, $currentUser.token)
+			console.log(result)
+
+			dispatch('eventChange')
+		}catch(e){
+			alert(`We couldn't delete your event: ${e.message}`)
+		}
 	}
 
 
@@ -69,9 +88,9 @@
 </script>
 
 <div class="event" class:is-focused={isFocused} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
-	<h3>{@html highlight(event.title)}</h3>
+	<h3>{@html highlightString ? highlight(event.title) : event.title}</h3>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
-	<p>{@html highlight(event.description)}</p>
+	<p>{@html highlightString ? highlight(event.description) : event.title}</p>
 
 	<div class="actions">
 		{#if isEditable}
