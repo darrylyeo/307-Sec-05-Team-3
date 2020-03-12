@@ -1,5 +1,6 @@
 <script>
 	import { API } from './api.js'
+	
 	import Event from './Event.svelte'
 	import EventForm from './EventForm.svelte'
 
@@ -30,9 +31,8 @@
 			: events
 
 	
-	const onSubmit = async function({detail: newEvent}){
-		console.log(newEvent, $currentUser.token)
-		const result = await API.event.postNewEvent(newEvent, $currentUser.token)
+	const onSubmit = async function({detail: event}){
+		const result = await API.event.postNewEvent(event, $currentUser.token)
 		console.log(result)
 	}
 
@@ -47,7 +47,7 @@
 		<button>Cancel</button>
 	</div>
 	
-	<EventForm on:submit={onSubmit} />
+	<EventForm submitLabel="Post Event" on:submit={onSubmit} />
 </div>
 {/if}
 
@@ -72,7 +72,13 @@
 		<p transition:fly={{y: -30}}>Looking for events...</p>
 	{:then events}
 		{#each filterEvents(events) as event (event.listingId)}
-			<Event {event} isFocused={$currentEvent === event} highlightString={searchFilter} on:click={e => $currentEvent = event}/>
+			<Event
+				{event}
+				isFocused={$currentEvent === event}
+				highlightString={searchFilter}
+				on:click={e => $currentEvent = event}
+				{currentUser}
+			/>
 		{:else}
 			<p>No events found.</p>
 			<p class="placeholder-icon">🏫</p>
@@ -84,16 +90,16 @@
 </div>
 
 <style>
-.upcoming-events {
-	padding: 1rem;
-	display: grid;
-	grid-auto-flow: row;
-	grid-gap: 0.65em;
-}
-.upcoming-events > * {
-	display: grid;
-	grid-auto-flow: column;
-	grid-gap: 0.5em;
-	align-items: center;
-}
+	.upcoming-events {
+		padding: 1rem;
+		display: grid;
+		grid-auto-flow: row;
+		grid-gap: 0.65em;
+	}
+	.upcoming-events > * {
+		display: grid;
+		grid-auto-flow: column;
+		grid-gap: 0.5em;
+		align-items: center;
+	}
 </style>

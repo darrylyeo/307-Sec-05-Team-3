@@ -1,14 +1,17 @@
 <script>
+	import { API } from './api.js'
 	import { formatDate, datesAreSameDay } from './date.js'
 
 	import EventForm from './EventForm.svelte'
 
-	export let event = {
-		title: '[Event Title]',
-		description: '[Event description]',
+	export let currentUser
+
+	export let event = {} /*= {
+		title: '',
+		description: '',
 		startTime: new Date(),
 		endTime: new Date()
-	}
+	}*/
 
 	export let isFocused = false
 
@@ -23,6 +26,12 @@
 	
 	let isEditing = false
 
+	const onSubmit = async function({detail: event}){
+		const result = await API.event.updateEvent(event, $currentUser.token)
+		console.log(result)
+	}
+
+
 	import { fly } from 'svelte/transition'
 </script>
 
@@ -31,12 +40,14 @@
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlight(event.description)}</p>
 	<div class="actions">
-		<button on:click={() => isEditing = true}>Edit</button>
+		{#if $currentUser && $currentUser.userId === event.userId}
+			<button on:click={() => isEditing = true}>Edit</button>
+		{/if}
 	</div>
 </div>
 
 {#if isEditing}
-	<EventForm />
+	<EventForm {event} submitLabel="Save Changes" on:submit={onSubmit} />
 {/if}
 
 <style>

@@ -172,18 +172,18 @@ export const API = {
 			}, makeTokenHeaders(token))
 		},
 
-		updateEvent(event){
+		updateEvent(event, token){
 			return PUT(`api/event/updateEvent`, {
 				"updatedEvent": {
 					...event
 				}
-			})
+			}, makeTokenHeaders(token))
 		},
 
-		deleteEvent(event){
+		deleteEvent(event, token){
 			return DELETE(`api/event/deleteEvent`, {
 				"eventIdToDelete": event.id
-			})
+			}, makeTokenHeaders(token))
 		},
 
 		getEventsByUser(user){
