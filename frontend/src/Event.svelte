@@ -149,7 +149,7 @@
 		gap: 0.3rem;
 		padding: 1rem;
 
-		padding: 0.65em;
+		padding: 0.75em;
 		font-size: 0.85em;
 	}
 	.event:not(:hover):not(:focus-within) .actions {

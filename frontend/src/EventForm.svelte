@@ -31,14 +31,14 @@
 		event.endTime = endTime.toString()
 	}
 
+	// $: {
+	// 	event.locX = (event.locX || 35.3013).toFixed(-Math.log10(LOCATION_PRECISION))
+	// 	event.locY = (event.locY || -120.6620).toFixed(-Math.log10(LOCATION_PRECISION))
+	// }
+
 	$: if($mapClick){
 		event.locX = $mapClick.lat.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lat - $mapClick.lat % LOCATION_PRECISION
 		event.locY = $mapClick.lng.toFixed(-Math.log10(LOCATION_PRECISION)) // $mapClick.lng - $mapClick.lng % LOCATION_PRECISION
-	}
-
-	$: {
-		event.locX = (event.locX || 35.3013).toFixed(-Math.log10(LOCATION_PRECISION))
-		event.locY = (event.locY || -120.6620).toFixed(-Math.log10(LOCATION_PRECISION))
 	}
 
 

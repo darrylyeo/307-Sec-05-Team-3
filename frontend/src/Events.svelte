@@ -26,18 +26,24 @@
 		})))
 		.then(_ => $events = _)
 
-	const filterEvents = events =>
-		searchFilter ?
-			events.filter(event =>
-				event.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
-				event.description.toLowerCase().includes(searchFilter.toLowerCase())
-			)
-		: isOnlyShowingUserEvents ?
+	const filterEvents = events => {
+		events = isOnlyShowingUserEvents ?
 			events.filter(event => event.userId === $currentUser.userId)
 		: isOnlyShowingBookmarkedEvents ?
 			events.filter(event => event.isBookmarked)
 		:
 			events
+		
+		events = searchFilter ?
+			events.filter(event =>
+				event.title.toLowerCase().includes(searchFilter.toLowerCase()) ||
+				event.description.toLowerCase().includes(searchFilter.toLowerCase())
+			)
+		:
+			events
+		
+		return events
+	}
 
 	
 	const onSubmit = async function({detail: event}){
@@ -94,7 +100,7 @@
 	{#await getEvents}
 		<p transition:fly={{y: -30}}>Loading events...</p>
 	{:then events}
-		{#each filterEvents(events) as event (event.listingId)}
+		{#each (isOnlyShowingUserEvents, isOnlyShowingBookmarkedEvents, filterEvents(events)) as event (event.listingId)}
 			<Event
 				{event}
 				isFocused={$currentEvent === event}
