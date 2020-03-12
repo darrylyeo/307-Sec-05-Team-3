@@ -87,7 +87,7 @@
 	})
 </script>
 
-<div class="event" class:is-focused={isFocused} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
+<div class="event" class:is-focused={isFocused} class:bookmarked={event.isBookmarked} on:click in:receive={{key: event.listingId}} out:send={{key: event.listingId}}>
 	<h3>{@html highlightString ? highlight(event.title) : event.title}</h3>
 	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlightString ? highlight(event.description) : event.title}</p>
@@ -104,6 +104,9 @@
 			{:else}
 				<button on:click={() => isDeleting = true}>Delete</button>
 			{/if}
+		{/if}
+		{#if $currentUser}
+			<button on:click={() => event.isBookmarked = !event.isBookmarked}>{event.isBookmarked ? 'Bookmarked' : 'Bookmark'}</button>
 		{/if}
 	</div>
 </div>
@@ -148,5 +151,9 @@
 	}
 	.event:not(:hover):not(:focus-within) .actions {
 		opacity: 0;
+	}
+
+	.bookmarked {
+		border-color: white;
 	}
 </style>
