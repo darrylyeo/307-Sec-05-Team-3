@@ -9,10 +9,17 @@
 	let isOnlyShowingUserEvents = false
 	let searchFilter = ''
 
-	$: getEvents = $currentUser && isOnlyShowingUserEvents
-		? API.event.getEventsByUser($currentUser)
-		: API.event.getAllEvents()
-	$: getEvents.then(_ => $events = _)
+	$: getEvents = (
+		$currentUser && isOnlyShowingUserEvents
+			? API.event.getEventsByUser($currentUser)
+			: API.event.getAllEvents()
+	)
+		.then(_ => _.map(event => ({
+			...event,
+			startTime: new Date(event.startTime),
+			endTime: new Date(event.endTime)
+		})))
+		.then(_ => $events = _)
 
 	const filterEvents = events =>
 		searchFilter
@@ -35,32 +42,32 @@
 
 {#if isCreatingNewEvent}
 <div>
-	<span>
+	<div>
 		<h2>New Event</h2>
 		<button>Cancel</button>
-	</span>
+	</div>
 	
 	<EventForm on:submit={onSubmit} />
 </div>
 {/if}
 
 <div>
-	<div>
-		<h2>Upcoming Events</h2>
-		{#if currentUser}
-			<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
-		{/if}
+	<div class="sticky upcoming-events">
+		<div>
+			<h2>Upcoming Events</h2>
+			{#if currentUser}
+				<button on:click={() => isCreatingNewEvent = true}>Create Event</button>
+			{/if}
+		</div>
+
+		<div>
+			<input type="search" placeholder="Search events..." bind:value={searchFilter} />
+			{#if currentUser}
+				<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
+			{/if}
+		</div>
 	</div>
 
-	<div>
-		<input type="search" placeholder="Search events..." bind:value={searchFilter} />
-		{#if currentUser}
-			<button on:click={() => isOnlyShowingUserEvents = !isOnlyShowingUserEvents}>{isOnlyShowingUserEvents ? 'All Events' : 'My Events'}</button>
-		{/if}
-	</div>
-</div>
-
-<div id="events">
 	{#await getEvents}
 		<p transition:fly={{y: -30}}>Looking for events...</p>
 	{:then events}
@@ -77,24 +84,16 @@
 </div>
 
 <style>
-	#events {
-		display: grid;
-		/* grid-template-rows: auto 1fr; */
-		grid-auto-rows: max-content;
-		overflow-y: auto;
-		grid-gap: 1px;
-	}
-	#events > * {
-		padding: 1rem;
-
-		display: grid;
-		grid-auto-flow: row;
-		grid-gap: 0.65em;
-	}
-	#events > * > * {
-		display: grid;
-		grid-auto-flow: column;
-		grid-gap: 0.5em;
-		align-items: center;
-	}
+.upcoming-events {
+	padding: 1rem;
+	display: grid;
+	grid-auto-flow: row;
+	grid-gap: 0.65em;
+}
+.upcoming-events > * {
+	display: grid;
+	grid-auto-flow: column;
+	grid-gap: 0.5em;
+	align-items: center;
+}
 </style>

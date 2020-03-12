@@ -1,5 +1,5 @@
 <script>
-	import { formatDate } from './date.js'
+	import { formatDate, datesAreSameDay } from './date.js'
 
 	import EventForm from './EventForm.svelte'
 
@@ -28,7 +28,7 @@
 
 <div class="event" class:is-focused={isFocused} transition:fly={{y: 300}} on:click>
 	<h3>{@html highlight(event.title)}</h3>
-	<date>{formatDate(event.startTime)} – {formatDate(event.endTime)}</date>
+	<date>{formatDate(event.startTime)} – {formatDate(event.endTime, datesAreSameDay(event.startTime, event.endTime))}</date>
 	<p>{@html highlight(event.description)}</p>
 	<div class="actions">
 		<button on:click={() => isEditing = true}>Edit</button>
