@@ -96,7 +96,9 @@
 		{#if $currentUser}
 			<button class:is-bookmarked={event.isBookmarked} on:click={() => event.isBookmarked = !event.isBookmarked}>{event.isBookmarked ? 'Bookmarked' : 'Bookmark'}</button>
 		{/if}
-		{#if isEditable}
+		{#if isEditing}
+			<button on:click={() => isEditing = false}>Cancel Edits</button>
+		{:else if isEditable}
 			<button on:click={() => isEditing = true}>Edit</button>
 
 			<!-- <button on:click={isDeleting ? onDelete : () => isDeleting = true} class="destructive">
