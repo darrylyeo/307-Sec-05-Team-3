@@ -1,6 +1,10 @@
-# CampusNow (CSC 307, Section 5, Team 3, Cal Poly, Winter 2020)
+# CampusNow
+
+CSC 307, Section 5, Team 3, Cal Poly, Winter 2020
 
 [![Build status](https://dev.azure.com/jasonjen0209/campusnow/_apis/build/status/campusnowbackend%20-%20CI)](https://dev.azure.com/jasonjen0209/campusnow/_build/latest?definitionId=1)
+
+## About
 
 CampusNow is a web application that allows users to browse, search for, and post events that are occurring near them. The app uses a street map and pins to allow users to easily visualize where events are taking place, as well as a side bar that provides a list of upcoming events and an interface to perform the CRUD actions (post, view, edit, and delete events).
 
